@@ -1,0 +1,212 @@
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    selectAllTenantUsers,
+    selectTenantUsersLoading,
+} from '../store/tenant-users/tenantUsersSelector';
+import {
+    fetchTenantUsersAsync,
+    inviteTenantUserAsync,
+    updateTenantUserRoleAsync,
+    removeTenantUserAsync,
+} from '../store/tenant-users/tenantUsersSlice';
+import { InviteTenantUserDto, UserRole } from '../store/tenant-users/tenantUsersTypes';
+import Modal from '../components/common/Modal';
+import Button from '../components/common/Button';
+import Input from '../components/common/Input';
+import Select from '../components/common/Select';
+
+const TenantUsers: React.FC = () => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const tenantUsers = useSelector(selectAllTenantUsers);
+    const isLoading = useSelector(selectTenantUsersLoading);
+
+    const [showInviteModal, setShowInviteModal] = useState(false);
+    const [showRoleModal, setShowRoleModal] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<any>(null);
+    const [inviteData, setInviteData] = useState<InviteTenantUserDto>({
+        email: '',
+        role: UserRole.USER,
+    });
+
+    useEffect(() => {
+        dispatch(fetchTenantUsersAsync() as any);
+    }, [dispatch]);
+
+    const handleInvite = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await dispatch(inviteTenantUserAsync(inviteData) as any);
+        setShowInviteModal(false);
+        setInviteData({ email: '', role: UserRole.USER });
+    };
+
+    const handleUpdateRole = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (selectedUser) {
+            await dispatch(updateTenantUserRoleAsync({
+                id: selectedUser.id,
+                data: { role: selectedUser.role },
+            }) as any);
+            setShowRoleModal(false);
+            setSelectedUser(null);
+        }
+    };
+
+    const handleRemove = async (id: string) => {
+        if (window.confirm(t('messages.deleteConfirm'))) {
+            await dispatch(removeTenantUserAsync(id) as any);
+        }
+    };
+
+    const openRoleModal = (user: any) => {
+        setSelectedUser({ ...user });
+        setShowRoleModal(true);
+    };
+
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold text-gray-900">{t('users.title')}</h1>
+                <Button onClick={() => setShowInviteModal(true)}>
+                    {t('users.invite')}
+                </Button>
+            </div>
+
+            {isLoading ? (
+                <div className="text-center py-12">{t('common.loading')}</div>
+            ) : (
+                <div className="card">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>{t('users.name')}</th>
+                                <th>{t('users.email')}</th>
+                                <th>{t('users.role')}</th>
+                                <th>{t('common.status')}</th>
+                                <th>{t('users.joinedAt')}</th>
+                                <th>{t('common.actions')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tenantUsers.map((user) => (
+                                <tr key={user.id}>
+                                    <td>{user.firstName} {user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <span className="badge badge-info">
+                                            {t(`users.roles.${user.role.toLowerCase()}`)}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className={`badge ${user.status === 'active' ? 'badge-success' :
+                                                user.status === 'invited' ? 'badge-warning' : 'badge-danger'
+                                            }`}>
+                                            {t(`users.statuses.${user.status}`)}
+                                        </span>
+                                    </td>
+                                    <td>{user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : '-'}</td>
+                                    <td className="space-x-2">
+                                        <button
+                                            onClick={() => openRoleModal(user)}
+                                            className="text-primary-600 hover:text-primary-700 text-sm"
+                                        >
+                                            {t('users.changeRole')}
+                                        </button>
+                                        <button
+                                            onClick={() => handleRemove(user.id)}
+                                            className="text-danger-600 hover:text-danger-700 text-sm"
+                                        >
+                                            {t('users.remove')}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
+            {/* Invite Modal */}
+            <Modal
+                isOpen={showInviteModal}
+                onClose={() => setShowInviteModal(false)}
+                title={t('users.invite')}
+            >
+                <form onSubmit={handleInvite} className="space-y-4">
+                    <Input
+                        label={t('users.email')}
+                        type="email"
+                        value={inviteData.email}
+                        onChange={(e) => setInviteData({ ...inviteData, email: e.target.value })}
+                        required
+                    />
+
+                    <Select
+                        label={t('users.role')}
+                        value={inviteData.role}
+                        onChange={(e) => setInviteData({ ...inviteData, role: e.target.value as UserRole })}
+                        required
+                    >
+                        <option value={UserRole.VIEWER}>{t('users.roles.viewer')}</option>
+                        <option value={UserRole.USER}>{t('users.roles.user')}</option>
+                        <option value={UserRole.ACCOUNTANT}>{t('users.roles.accountant')}</option>
+                        <option value={UserRole.MANAGER}>{t('users.roles.manager')}</option>
+                        <option value={UserRole.ADMIN}>{t('users.roles.admin')}</option>
+                    </Select>
+
+                    <div className="flex justify-end space-x-3 pt-4">
+                        <Button variant="secondary" onClick={() => setShowInviteModal(false)} type="button">
+                            {t('common.cancel')}
+                        </Button>
+                        <Button type="submit">
+                            {t('users.sendInvitation')}
+                        </Button>
+                    </div>
+                </form>
+            </Modal>
+
+            {/* Change Role Modal */}
+            <Modal
+                isOpen={showRoleModal}
+                onClose={() => setShowRoleModal(false)}
+                title={t('users.changeRole')}
+            >
+                {selectedUser && (
+                    <form onSubmit={handleUpdateRole} className="space-y-4">
+                        <div>
+                            <p className="text-sm text-gray-600 mb-4">
+                                {t('users.changingRoleFor')}: <strong>{selectedUser.email}</strong>
+                            </p>
+                        </div>
+
+                        <Select
+                            label={t('users.newRole')}
+                            value={selectedUser.role}
+                            onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value as UserRole })}
+                            required
+                        >
+                            <option value={UserRole.VIEWER}>{t('users.roles.viewer')}</option>
+                            <option value={UserRole.USER}>{t('users.roles.user')}</option>
+                            <option value={UserRole.ACCOUNTANT}>{t('users.roles.accountant')}</option>
+                            <option value={UserRole.MANAGER}>{t('users.roles.manager')}</option>
+                            <option value={UserRole.ADMIN}>{t('users.roles.admin')}</option>
+                        </Select>
+
+                        <div className="flex justify-end space-x-3 pt-4">
+                            <Button variant="secondary" onClick={() => setShowRoleModal(false)} type="button">
+                                {t('common.cancel')}
+                            </Button>
+                            <Button type="submit">
+                                {t('common.save')}
+                            </Button>
+                        </div>
+                    </form>
+                )}
+            </Modal>
+        </div>
+    );
+};
+
+export default TenantUsers;
