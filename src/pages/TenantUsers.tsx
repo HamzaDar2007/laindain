@@ -90,39 +90,42 @@ const TenantUsers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {tenantUsers.map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.firstName} {user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td>
-                                        <span className="badge badge-info">
-                                            {t(`users.roles.${user.role.toLowerCase()}`)}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span className={`badge ${user.status === 'active' ? 'badge-success' :
+                            {tenantUsers?.map((user) => {
+                                const roleName = user.role ? String(user.role).toLowerCase() : '';
+                                return (
+                                    <tr key={user.id}>
+                                        <td>{user.firstName} {user.lastName}</td>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            <span className="badge badge-info">
+                                                {roleName ? t(`users.roles.${roleName}`) : 'Unknown'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`badge ${user.status === 'active' ? 'badge-success' :
                                                 user.status === 'invited' ? 'badge-warning' : 'badge-danger'
-                                            }`}>
-                                            {t(`users.statuses.${user.status}`)}
-                                        </span>
-                                    </td>
-                                    <td>{user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : '-'}</td>
-                                    <td className="space-x-2">
-                                        <button
-                                            onClick={() => openRoleModal(user)}
-                                            className="text-primary-600 hover:text-primary-700 text-sm"
-                                        >
-                                            {t('users.changeRole')}
-                                        </button>
-                                        <button
-                                            onClick={() => handleRemove(user.id)}
-                                            className="text-danger-600 hover:text-danger-700 text-sm"
-                                        >
-                                            {t('users.remove')}
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                                                }`}>
+                                                {t(`users.statuses.${user.status}`)}
+                                            </span>
+                                        </td>
+                                        <td>{user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : '-'}</td>
+                                        <td className="space-x-2">
+                                            <button
+                                                onClick={() => openRoleModal(user)}
+                                                className="text-primary-600 hover:text-primary-700 text-sm"
+                                            >
+                                                {t('users.changeRole')}
+                                            </button>
+                                            <button
+                                                onClick={() => handleRemove(user.id)}
+                                                className="text-danger-600 hover:text-danger-700 text-sm"
+                                            >
+                                                {t('users.remove')}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
