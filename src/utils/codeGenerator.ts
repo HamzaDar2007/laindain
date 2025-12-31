@@ -13,17 +13,18 @@ const typeToLevel1Code: Record<AccountType, number> = {
     [AccountType.ASSET]: 1,
     [AccountType.LIABILITY]: 2,
     [AccountType.EQUITY]: 3,
-    [AccountType.INCOME]: 4,
+    [AccountType.REVENUE]: 4,
     [AccountType.EXPENSE]: 5,
 };
 
 export function generateAccountCode(
-    level: number,
+    level: number | string,
     type: AccountType,
     parentCode: string | null,
     existingAccounts: Account[]
 ): string {
-    if (level === 1) {
+    const numericLevel = typeof level === 'string' ? parseInt(level, 10) : level;
+    if (numericLevel === 1) {
         // Level 1: X-00-000-0000
         const typeCode = typeToLevel1Code[type];
         return `${typeCode}-00-000-0000`;
@@ -35,27 +36,27 @@ export function generateAccountCode(
 
     const parts = parentCode.split('-');
 
-    if (level === 2) {
+    if (numericLevel === 2) {
         // Level 2: X-YY-000-0000
         const level1Code = parts[0];
-        const nextLevel2 = getNextCodeAtLevel(existingAccounts, level, parentCode);
+        const nextLevel2 = getNextCodeAtLevel(existingAccounts, numericLevel, parentCode);
         return `${level1Code}-${padNumber(nextLevel2, 2)}-000-0000`;
     }
 
-    if (level === 3) {
+    if (numericLevel === 3) {
         // Level 3: X-YY-ZZZ-0000
         const level1Code = parts[0];
         const level2Code = parts[1];
-        const nextLevel3 = getNextCodeAtLevel(existingAccounts, level, parentCode);
+        const nextLevel3 = getNextCodeAtLevel(existingAccounts, numericLevel, parentCode);
         return `${level1Code}-${level2Code}-${padNumber(nextLevel3, 3)}-0000`;
     }
 
-    if (level === 4) {
+    if (numericLevel === 4) {
         // Level 4: X-YY-ZZZ-WWWW
         const level1Code = parts[0];
         const level2Code = parts[1];
         const level3Code = parts[2];
-        const nextLevel4 = getNextCodeAtLevel(existingAccounts, level, parentCode);
+        const nextLevel4 = getNextCodeAtLevel(existingAccounts, numericLevel, parentCode);
         return `${level1Code}-${level2Code}-${level3Code}-${padNumber(nextLevel4, 4)}`;
     }
 
@@ -64,28 +65,29 @@ export function generateAccountCode(
 
 function getNextCodeAtLevel(
     accounts: Account[],
-    level: number,
+    numericLevel: number,
     parentCode: string
 ): number {
     // Filter accounts that are children of the parent
     const siblings = accounts.filter((acc) => {
-        if (level === 2) {
+        const accLevel = typeof acc.level === 'string' ? parseInt(acc.level, 10) : acc.level;
+        if (numericLevel === 2) {
             // Level 2 accounts have same first part
-            return acc.level === level && acc.code.startsWith(parentCode.split('-')[0]);
+            return accLevel === numericLevel && acc.code.startsWith(parentCode.split('-')[0]);
         }
-        if (level === 3) {
+        if (numericLevel === 3) {
             // Level 3 accounts have same first two parts
             const parentParts = parentCode.split('-');
             return (
-                acc.level === level &&
+                accLevel === numericLevel &&
                 acc.code.startsWith(`${parentParts[0]}-${parentParts[1]}`)
             );
         }
-        if (level === 4) {
+        if (numericLevel === 4) {
             // Level 4 accounts have same first three parts
             const parentParts = parentCode.split('-');
             return (
-                acc.level === level &&
+                accLevel === numericLevel &&
                 acc.code.startsWith(`${parentParts[0]}-${parentParts[1]}-${parentParts[2]}`)
             );
         }
@@ -100,7 +102,7 @@ function getNextCodeAtLevel(
     const maxCode = Math.max(
         ...siblings.map((acc) => {
             const parts = acc.code.split('-');
-            return parseInt(parts[level], 10);
+            return parseInt(parts[numericLevel - 1], 10);
         })
     );
 

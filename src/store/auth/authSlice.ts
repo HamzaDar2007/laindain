@@ -17,8 +17,10 @@ export const loginAsync = createAppAsyncThunk(
     'auth/login',
     async (credentials: LoginCredentials) => {
         const response = await authApi.login(credentials);
-        localStorage.setItem('authToken', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
+        localStorage.setItem('authToken', response.access_token);
+        if (response.refreshToken) {
+            localStorage.setItem('refreshToken', response.refreshToken);
+        }
         return response;
     }
 );
@@ -34,8 +36,10 @@ export const refreshTokenAsync = createAppAsyncThunk(
     'auth/refreshToken',
     async (refreshToken: string) => {
         const response = await authApi.refreshToken(refreshToken);
-        localStorage.setItem('authToken', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
+        localStorage.setItem('authToken', response.access_token);
+        if (response.refreshToken) {
+            localStorage.setItem('refreshToken', response.refreshToken);
+        }
         return response;
     }
 );
@@ -66,8 +70,8 @@ const authSlice = createSlice({
         builder.addCase(loginAsync.fulfilled, (state, action) => {
             state.isLoading = false;
             state.user = action.payload.user;
-            state.token = action.payload.accessToken;
-            state.refreshToken = action.payload.refreshToken;
+            state.token = action.payload.access_token;
+            state.refreshToken = action.payload.refreshToken || null;
             state.isAuthenticated = true;
         });
         builder.addCase(loginAsync.rejected, (state, action) => {
@@ -90,8 +94,8 @@ const authSlice = createSlice({
 
         // Refresh Token
         builder.addCase(refreshTokenAsync.fulfilled, (state, action) => {
-            state.token = action.payload.accessToken;
-            state.refreshToken = action.payload.refreshToken;
+            state.token = action.payload.access_token;
+            state.refreshToken = action.payload.refreshToken || null;
         });
     },
 });

@@ -1,5 +1,5 @@
 import { RootState } from '../index';
-import { Account } from './accountsTypes';
+
 
 export const selectAllAccounts = (state: RootState) => state.accounts.accounts;
 export const selectAccountTree = (state: RootState) => state.accounts.accountTree;

@@ -88,6 +88,10 @@ const accountsSlice = createSlice({
         builder.addCase(createAccountAsync.fulfilled, (state, action) => {
             state.accounts.push(action.payload);
         });
+        builder.addCase(createAccountAsync.rejected, (state, action) => {
+            state.error = action.error.message || 'Failed to create account';
+            console.error('Account creation failed:', action.error);
+        });
 
         // Update account
         builder.addCase(updateAccountAsync.fulfilled, (state, action) => {

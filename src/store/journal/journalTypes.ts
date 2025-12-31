@@ -9,22 +9,24 @@ export interface JournalLine {
     id?: string;
     accountId: string;
     account?: any;
-    debit: number;
-    credit: number;
-    narration?: string;
+    debit: number | string;
+    credit: number | string;
+    description?: string;
+    partyId?: string;
 }
 
 export interface JournalEntry {
     id: string;
-    tenantId: string;
-    voucherNumber: string;
-    date: string;
-    voucherTypeId?: string;
+    companyId: string;
+    voucherNo: string;
+    entryDate: string;
+    postingDate: string;
+    voucherTypeId: string;
     reference?: string;
-    description: string;
+    description?: string;
     status: JournalStatus;
-    totalDebit: number;
-    totalCredit: number;
+    totalDebit?: number;
+    totalCredit?: number;
     lines: JournalLine[];
     createdBy: string;
     postedBy?: string;
@@ -34,10 +36,12 @@ export interface JournalEntry {
 }
 
 export interface CreateJournalEntryDto {
-    date: string;
-    voucherTypeId?: string;
+    voucherTypeId: string;
+    voucherNo: string;
+    entryDate: string;
+    postingDate: string;
     reference?: string;
-    description: string;
+    description?: string;
     lines: JournalLine[];
 }
 

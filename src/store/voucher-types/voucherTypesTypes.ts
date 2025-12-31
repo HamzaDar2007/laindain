@@ -1,12 +1,27 @@
+export enum VoucherNature {
+    PAYMENT = 'payment',
+    RECEIPT = 'receipt',
+    JOURNAL = 'journal',
+    CONTRA = 'contra',
+    SALES = 'sales',
+    PURCHASE = 'purchase',
+    CREDIT_NOTE = 'credit_note',
+    DEBIT_NOTE = 'debit_note',
+    OPENING = 'opening',
+}
+
 export interface VoucherType {
     id: string;
     name: string;
     code: string;
-    description?: string;
+    nature: VoucherNature;
+    autoNumbering: boolean;
+    prefix?: string;
+    requiresApproval: boolean;
     isActive: boolean;
     createdAt: string;
     updatedAt: string;
-    tenantId: string;
+    companyId: string;
 }
 
 export interface VoucherTypeState {
@@ -19,12 +34,18 @@ export interface VoucherTypeState {
 export interface CreateVoucherTypeDto {
     name: string;
     code: string;
-    description?: string;
+    nature: VoucherNature;
+    autoNumbering?: boolean;
+    prefix?: string;
+    requiresApproval?: boolean;
 }
 
 export interface UpdateVoucherTypeDto {
     name?: string;
     code?: string;
-    description?: string;
+    nature?: VoucherNature;
+    autoNumbering?: boolean;
+    prefix?: string;
+    requiresApproval?: boolean;
     isActive?: boolean;
 }

@@ -20,3 +20,52 @@ export const fetchBalanceSheet = async (asOfDate: string): Promise<any> => {
 export const fetchCashFlow = async (filter: ReportFilter): Promise<any> => {
     return apiClient.get('/reports/cash-flow', { params: filter });
 };
+
+export const fetchVatReport = async (filter: ReportFilter): Promise<any> => {
+    return apiClient.get('/reports/vat', { params: filter });
+};
+
+export const fetchCustomerReport = async (filter: ReportFilter): Promise<any> => {
+    return apiClient.get('/reports/customers', { params: filter });
+};
+
+export const fetchDashboardCharts = async (months: number = 6): Promise<any> => {
+    return apiClient.get('/reports/dashboard/charts', { params: { months } });
+};
+
+export const fetchExpensesByCategory = async (filter: ReportFilter): Promise<any> => {
+    return apiClient.get('/reports/expenses/by-category', { params: filter });
+};
+
+// Excel Export Functions
+export const exportVatReportExcel = async (filter: ReportFilter & { language: string }): Promise<Blob> => {
+    const response = await apiClient.get('/reports/vat/export/excel', { 
+        params: filter,
+        responseType: 'blob'
+    });
+    return response as unknown as Blob;
+};
+
+export const exportProfitLossExcel = async (filter: ReportFilter & { language: string }): Promise<Blob> => {
+    const response = await apiClient.get('/reports/profit-loss/export/excel', { 
+        params: filter,
+        responseType: 'blob'
+    });
+    return response as unknown as Blob;
+};
+
+export const exportBalanceSheetExcel = async (params: { asOfDate: string; language: string }): Promise<Blob> => {
+    const response = await apiClient.get('/reports/balance-sheet/export/excel', { 
+        params,
+        responseType: 'blob'
+    });
+    return response as unknown as Blob;
+};
+
+export const exportExpensesByCategoryExcel = async (filter: ReportFilter & { language: string }): Promise<Blob> => {
+    const response = await apiClient.get('/reports/expenses/by-category/export/excel', { 
+        params: filter,
+        responseType: 'blob'
+    });
+    return response as unknown as Blob;
+};

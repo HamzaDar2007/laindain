@@ -29,12 +29,14 @@ const JournalEntries: React.FC = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState<CreateJournalEntryDto>({
-        date: new Date().toISOString().split('T')[0],
+        entryDate: new Date().toISOString().split('T')[0],
+        postingDate: new Date().toISOString().split('T')[0],
         description: '',
         voucherTypeId: '',
+        voucherNo: '',
         lines: [
-            { accountId: '', debit: 0, credit: 0, narration: '' },
-            { accountId: '', debit: 0, credit: 0, narration: '' },
+            { accountId: '', debit: 0, credit: 0, description: '' },
+            { accountId: '', debit: 0, credit: 0, description: '' },
         ],
     });
 
@@ -54,7 +56,7 @@ const JournalEntries: React.FC = () => {
     const addLine = () => {
         setFormData({
             ...formData,
-            lines: [...formData.lines, { accountId: '', debit: 0, credit: 0, narration: '' }],
+            lines: [...formData.lines, { accountId: '', debit: 0, credit: 0, description: '' }],
         });
     };
 
@@ -71,8 +73,8 @@ const JournalEntries: React.FC = () => {
         }
     };
 
-    const getTotalDebit = () => formData.lines.reduce((sum, line) => sum + (line.debit || 0), 0);
-    const getTotalCredit = () => formData.lines.reduce((sum, line) => sum + (line.credit || 0), 0);
+    const getTotalDebit = () => formData.lines.reduce((sum, line) => sum + Number(line.debit || 0), 0);
+    const getTotalCredit = () => formData.lines.reduce((sum, line) => sum + Number(line.credit || 0), 0);
     const isBalanced = () => Math.abs(getTotalDebit() - getTotalCredit()) < 0.01;
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -87,13 +89,15 @@ const JournalEntries: React.FC = () => {
         await dispatch(fetchJournalsAsync() as any);
         setShowModal(false);
         setFormData({
-            date: new Date().toISOString().split('T')[0],
+            entryDate: new Date().toISOString().split('T')[0],
+            postingDate: new Date().toISOString().split('T')[0],
             description: '',
             voucherTypeId: voucherTypes.length > 0 ? voucherTypes[0].id : '',
-            reference: '', // Reset reference
+            voucherNo: '',
+            reference: '',
             lines: [
-                { accountId: '', debit: 0, credit: 0, narration: '' },
-                { accountId: '', debit: 0, credit: 0, narration: '' },
+                { accountId: '', debit: 0, credit: 0, description: '' },
+                { accountId: '', debit: 0, credit: 0, description: '' },
             ],
         });
     };
@@ -142,8 +146,8 @@ const JournalEntries: React.FC = () => {
                         <tbody>
                             {journals.map((journal) => (
                                 <tr key={journal.id}>
-                                    <td className="font-mono">{journal.voucherNumber}</td>
-                                    <td>{formatDate(journal.date)}</td>
+                                    <td className="font-mono">{journal.voucherNo}</td>
+                                    <td>{formatDate(journal.entryDate)}</td>
                                     <td>{journal.description}</td>
                                     <td className="font-mono">{Number(journal.totalDebit).toFixed(2)}</td>
                                     <td className="font-mono">{Number(journal.totalCredit).toFixed(2)}</td>
@@ -190,10 +194,12 @@ const JournalEntries: React.FC = () => {
                                     </label>
                                     <input
                                         type="date"
+                                        name="entryDate"
+                                        data-testid="entryDate"
                                         required
                                         className="input"
-                                        value={formData.date}
-                                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                                        value={formData.entryDate}
+                                        onChange={(e) => setFormData({ ...formData, entryDate: e.target.value, postingDate: e.target.value })}
                                     />
                                 </div>
                                 <div>
@@ -202,6 +208,8 @@ const JournalEntries: React.FC = () => {
                                     </label>
                                     <select
                                         required
+                                        name="voucherTypeId"
+                                        data-testid="voucherTypeId"
                                         className="input"
                                         value={formData.voucherTypeId}
                                         onChange={(e) => setFormData({ ...formData, voucherTypeId: e.target.value })}
@@ -213,6 +221,22 @@ const JournalEntries: React.FC = () => {
                                     </select>
                                 </div>
                             </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    {t('journal.voucherNo')}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="voucherNo"
+                                    data-testid="voucherNo"
+                                    required
+                                    className="input font-mono"
+                                    placeholder="AUTO-GENERATED"
+                                    value={formData.voucherNo || ''}
+                                    onChange={(e) => setFormData({ ...formData, voucherNo: e.target.value })}
+                                />
+                            </div>
+
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     {t('journal.reference')}
@@ -231,6 +255,8 @@ const JournalEntries: React.FC = () => {
                                 </label>
                                 <input
                                     type="text"
+                                    name="description"
+                                    data-testid="description"
                                     required
                                     className="input"
                                     value={formData.description}
@@ -254,6 +280,8 @@ const JournalEntries: React.FC = () => {
                                             <div className="col-span-4">
                                                 <select
                                                     required
+                                                    name={`accountId-${index}`}
+                                                    data-testid={`accountId-${index}`}
                                                     className="input text-sm"
                                                     value={line.accountId}
                                                     onChange={(e) => updateLine(index, 'accountId', e.target.value)}
@@ -270,29 +298,33 @@ const JournalEntries: React.FC = () => {
                                                 <input
                                                     type="number"
                                                     step="0.01"
+                                                    name={`debit-${index}`}
+                                                    data-testid={`debit-${index}`}
                                                     placeholder={t('journal.debit')}
                                                     className="input text-sm"
                                                     value={line.debit || ''}
-                                                    onChange={(e) => updateLine(index, 'debit', parseFloat(e.target.value) || 0)}
+                                                    onChange={(e) => updateLine(index, 'debit', e.target.value)}
                                                 />
                                             </div>
                                             <div className="col-span-2">
                                                 <input
                                                     type="number"
                                                     step="0.01"
+                                                    name={`credit-${index}`}
+                                                    data-testid={`credit-${index}`}
                                                     placeholder={t('journal.credit')}
                                                     className="input text-sm"
                                                     value={line.credit || ''}
-                                                    onChange={(e) => updateLine(index, 'credit', parseFloat(e.target.value) || 0)}
+                                                    onChange={(e) => updateLine(index, 'credit', e.target.value)}
                                                 />
                                             </div>
                                             <div className="col-span-3">
                                                 <input
                                                     type="text"
-                                                    placeholder={t('journal.narration')}
+                                                    placeholder={t('journal.description')}
                                                     className="input text-sm"
-                                                    value={line.narration || ''}
-                                                    onChange={(e) => updateLine(index, 'narration', e.target.value)}
+                                                    value={line.description || ''}
+                                                    onChange={(e) => updateLine(index, 'description', e.target.value)}
                                                 />
                                             </div>
                                             <div className="col-span-1">

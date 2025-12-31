@@ -10,7 +10,8 @@ export interface Payment {
     accountId: string;
     createdAt: string;
     updatedAt: string;
-    tenantId: string;
+    companyId: string;
+    tenantId?: string;
 }
 
 export interface PaymentState {

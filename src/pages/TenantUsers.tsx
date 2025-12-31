@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
     selectAllTenantUsers,
     selectTenantUsersLoading,
+    selectTenantUsersError,
 } from '../store/tenant-users/tenantUsersSelector';
 import {
     fetchTenantUsersAsync,
@@ -22,6 +23,7 @@ const TenantUsers: React.FC = () => {
     const dispatch = useDispatch();
     const tenantUsers = useSelector(selectAllTenantUsers);
     const isLoading = useSelector(selectTenantUsersLoading);
+    const error = useSelector(selectTenantUsersError);
 
     const [showInviteModal, setShowInviteModal] = useState(false);
     const [showRoleModal, setShowRoleModal] = useState(false);
@@ -74,8 +76,18 @@ const TenantUsers: React.FC = () => {
                 </Button>
             </div>
 
+            {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {error}
+                </div>
+            )}
+
             {isLoading ? (
                 <div className="text-center py-12">{t('common.loading')}</div>
+            ) : tenantUsers?.length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                    No team members found. Try inviting someone!
+                </div>
             ) : (
                 <div className="card">
                     <table className="table">
@@ -105,7 +117,7 @@ const TenantUsers: React.FC = () => {
                                             <span className={`badge ${user.status === 'active' ? 'badge-success' :
                                                 user.status === 'invited' ? 'badge-warning' : 'badge-danger'
                                                 }`}>
-                                                {t(`users.statuses.${user.status}`)}
+                                                {user.status ? t(`users.statuses.${user.status}`) : 'Unknown'}
                                             </span>
                                         </td>
                                         <td>{user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : '-'}</td>

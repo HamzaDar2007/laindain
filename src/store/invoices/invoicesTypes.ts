@@ -1,31 +1,41 @@
+export enum InvoiceType {
+    SALES = 'sales',
+    PURCHASE = 'purchase',
+}
+
 export interface Invoice {
     id: string;
+    invoiceNo: string;
     invoiceNumber: string;
     invoiceDate: string;
     dueDate: string;
     customerId?: string;
+    partyId?: string;
     customerName: string;
     customerEmail?: string;
-    customerAddress?: string;
-    status: 'draft' | 'posted' | 'cancelled';
+    status: 'draft' | 'sent' | 'paid' | 'cancelled';
+    invoiceType: InvoiceType;
+    vatRate: number;
+    currencyCode: string;
     subtotal: number;
     taxAmount: number;
     totalAmount: number;
-    lines: InvoiceLine[];
+    invoiceItems: InvoiceItem[];
     notes?: string;
     createdAt: string;
     updatedAt: string;
-    tenantId: string;
+    companyId: string;
 }
 
-export interface InvoiceLine {
+export interface InvoiceItem {
     id?: string;
+    itemId?: string;
     description: string;
     quantity: number;
     unitPrice: number;
-    amount: number;
-    accountId: string;
-    taxRate?: number;
+    vatRate: number;
+    discountPercentage?: number;
+    amount?: number;
 }
 
 export interface InvoiceState {
@@ -36,21 +46,15 @@ export interface InvoiceState {
 }
 
 export interface CreateInvoiceDto {
-    invoiceDate: string;
-    dueDate: string;
-    customerName: string;
-    customerEmail?: string;
-    customerAddress?: string;
-    lines: Omit<InvoiceLine, 'id'>[];
-    notes?: string;
-}
-
-export interface UpdateInvoiceDto {
+    customerId: string;
+    invoiceNumber?: string;
+    invoiceType: InvoiceType;
     invoiceDate?: string;
     dueDate?: string;
-    customerName?: string;
-    customerEmail?: string;
-    customerAddress?: string;
-    lines?: Omit<InvoiceLine, 'id'>[];
+    vatRate: number;
+    currencyCode: string;
     notes?: string;
+    invoiceItems: InvoiceItem[];
 }
+
+export interface UpdateInvoiceDto extends Partial<CreateInvoiceDto> { }

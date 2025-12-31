@@ -11,7 +11,8 @@ import {
     updateVoucherTypeAsync,
     deleteVoucherTypeAsync,
 } from '../store/voucher-types/voucherTypesSlice';
-import { CreateVoucherTypeDto, VoucherType } from '../store/voucher-types/voucherTypesTypes';
+import { CreateVoucherTypeDto, VoucherNature, VoucherType } from '../store/voucher-types/voucherTypesTypes';
+import Select from '../components/common/Select';
 import Modal from '../components/common/Modal';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
@@ -27,7 +28,10 @@ const VoucherTypes: React.FC = () => {
     const [formData, setFormData] = useState<CreateVoucherTypeDto>({
         name: '',
         code: '',
-        description: '',
+        nature: VoucherNature.JOURNAL,
+        autoNumbering: true,
+        prefix: '',
+        requiresApproval: false,
     });
 
     useEffect(() => {
@@ -36,7 +40,14 @@ const VoucherTypes: React.FC = () => {
 
     const handleCreate = () => {
         setEditingVoucherType(null);
-        setFormData({ name: '', code: '', description: '' });
+        setFormData({
+            name: '',
+            code: '',
+            nature: VoucherNature.JOURNAL,
+            autoNumbering: true,
+            prefix: '',
+            requiresApproval: false
+        });
         setShowModal(true);
     };
 
@@ -45,13 +56,20 @@ const VoucherTypes: React.FC = () => {
         setFormData({
             name: voucherType.name,
             code: voucherType.code,
-            description: voucherType.description || '',
+            nature: voucherType.nature,
+            autoNumbering: voucherType.autoNumbering,
+            prefix: voucherType.prefix || '',
+            requiresApproval: voucherType.requiresApproval,
         });
         setShowModal(true);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!formData.code.trim() || !formData.name.trim()) {
+            return; // Prevent submission if fields are empty
+        }
 
         if (editingVoucherType) {
             await dispatch(updateVoucherTypeAsync({ id: editingVoucherType.id, data: formData }) as any);
@@ -60,7 +78,14 @@ const VoucherTypes: React.FC = () => {
         }
 
         setShowModal(false);
-        setFormData({ name: '', code: '', description: '' });
+        setFormData({
+            name: '',
+            code: '',
+            nature: VoucherNature.JOURNAL,
+            autoNumbering: true,
+            prefix: '',
+            requiresApproval: false
+        });
     };
 
     const handleDelete = async (id: string) => {
@@ -88,7 +113,7 @@ const VoucherTypes: React.FC = () => {
                             <tr>
                                 <th>{t('voucherTypes.code')}</th>
                                 <th>{t('voucherTypes.name')}</th>
-                                <th>{t('voucherTypes.description')}</th>
+                                <th>{t('voucherTypes.nature')}</th>
                                 <th>{t('common.status')}</th>
                                 <th>{t('common.actions')}</th>
                             </tr>
@@ -98,7 +123,9 @@ const VoucherTypes: React.FC = () => {
                                 <tr key={voucherType.id}>
                                     <td className="font-mono">{voucherType.code}</td>
                                     <td>{voucherType.name}</td>
-                                    <td>{voucherType.description || '-'}</td>
+                                    <td>
+                                        <span className="badge badge-info">{voucherType.nature}</span>
+                                    </td>
                                     <td>
                                         <span className={`badge ${voucherType.isActive ? 'badge-success' : 'badge-danger'}`}>
                                             {voucherType.isActive ? t('common.active') : t('common.inactive')}
@@ -143,16 +170,43 @@ const VoucherTypes: React.FC = () => {
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
                     />
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {t('voucherTypes.description')}
-                        </label>
-                        <textarea
-                            className="input"
-                            rows={3}
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    <div className="grid grid-cols-2 gap-4">
+                        <Select
+                            label={t('voucherTypes.nature')}
+                            value={formData.nature}
+                            onChange={(e) => setFormData({ ...formData, nature: e.target.value as VoucherNature })}
+                            required
+                        >
+                            {Object.values(VoucherNature).map(val => (
+                                <option key={val} value={val}>{val}</option>
+                            ))}
+                        </Select>
+                        <Input
+                            label={t('voucherTypes.prefix')}
+                            value={formData.prefix}
+                            onChange={(e) => setFormData({ ...formData, prefix: e.target.value })}
                         />
+                    </div>
+
+                    <div className="flex items-center space-x-6">
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                checked={formData.autoNumbering}
+                                onChange={(e) => setFormData({ ...formData, autoNumbering: e.target.checked })}
+                            />
+                            <span className="text-sm text-gray-700">{t('voucherTypes.autoNumbering')}</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                checked={formData.requiresApproval}
+                                onChange={(e) => setFormData({ ...formData, requiresApproval: e.target.checked })}
+                            />
+                            <span className="text-sm text-gray-700">{t('voucherTypes.requiresApproval')}</span>
+                        </label>
                     </div>
 
                     <div className="flex justify-end space-x-3 pt-4">

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+// import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectTrialBalance,
@@ -20,7 +20,7 @@ import Card from '../components/common/Card';
 type ReportType = 'trial-balance' | 'profit-loss' | 'balance-sheet' | 'cash-flow';
 
 const Reports: React.FC = () => {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const trialBalance = useSelector(selectTrialBalance);

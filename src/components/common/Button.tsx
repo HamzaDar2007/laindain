@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'danger' | 'success';
+    variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'outline';
     size?: 'sm' | 'md' | 'lg';
     fullWidth?: boolean;
     loading?: boolean;
@@ -20,16 +20,17 @@ const Button: React.FC<ButtonProps> = ({
     const baseClasses = 'btn';
 
     const variantClasses = {
-        primary: 'btn-primary',
+        primary: 'btn-primary shadow-lg hover:shadow-primary-500/30',
         secondary: 'btn-secondary',
-        danger: 'btn-danger',
-        success: 'btn-success',
+        danger: 'btn-danger shadow-lg hover:shadow-danger-500/30',
+        success: 'btn-success shadow-lg hover:shadow-success-500/30',
+        outline: 'btn-outline',
     };
 
     const sizeClasses = {
-        sm: 'px-3 py-1.5 text-sm',
-        md: 'px-4 py-2',
-        lg: 'px-6 py-3 text-lg',
+        sm: 'px-3 py-1.5 text-xs',
+        md: 'px-5 py-2.5 text-sm',
+        lg: 'px-6 py-3 text-base',
     };
 
     const classes = [

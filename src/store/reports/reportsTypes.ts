@@ -69,6 +69,10 @@ export interface ReportState {
         financing: CashFlowSection;
         netChange: number;
     } | null;
+    vatReport: any | null;
+    customerReport: any | null;
+    dashboardCharts: any | null;
+    expensesByCategory: any | null;
     isLoading: boolean;
     error: string | null;
 }

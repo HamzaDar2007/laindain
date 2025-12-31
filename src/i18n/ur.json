@@ -12,7 +12,13 @@
         "payments": "ادائیگیاں",
         "reports": "رپورٹس",
         "users": "ٹیم ممبرز",
-        "settings": "ترتیبات"
+        "settings": "ترتیبات",
+        "billing": "بلنگ",
+        "integrations": "انضمام",
+        "fiscalYears": "مالی سال",
+        "auditLogs": "آڈٹ لاگز",
+        "roles": "کردار",
+        "constants": "مستقل اقدار"
     },
     "auth": {
         "login": "لاگ ان",
@@ -166,7 +172,9 @@
         "select": "منتخب کریں",
         "selected": "منتخب شدہ",
         "required": "ضروری",
-        "optional": "اختیاری"
+        "optional": "اختیاری",
+        "create": "بنائیں",
+        "update": "اپ ڈیٹ کریں"
     },
     "messages": {
         "loginSuccess": "لاگ ان کامیاب",
@@ -281,5 +289,16 @@
         "positive": "براہ کرم مثبت نمبر درج کریں",
         "passwordMatch": "پاس ورڈ مماثل نہیں ہیں",
         "invalidFormat": "غلط فارمیٹ"
+    },
+    "constants": {
+        "title": "مستقل اقدار",
+        "addConstant": "مستقل قدر شامل کریں",
+        "editConstant": "مستقل قدر میں ترمیم",
+        "type": "قسم",
+        "key": "کلید",
+        "value": "قدر",
+        "description": "تفصیل",
+        "status": "حیثیت",
+        "confirmDelete": "کیا آپ واقعی اس مستقل قدر کو حذف کرنا چاہتے ہیں؟"
     }
 }

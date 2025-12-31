@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectSubscription,
@@ -19,7 +19,7 @@ import Select from '../components/common/Select';
 import Card from '../components/common/Card';
 
 const Billing: React.FC = () => {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const dispatch = useDispatch();
     const subscription = useSelector(selectSubscription);
     const transactions = useSelector(selectTransactions);

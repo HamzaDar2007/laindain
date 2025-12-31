@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectIsAuthenticated, selectUser } from './store/auth/authSelector';
 import { selectDirection } from './store/language/languageSelector';
+import { selectTheme } from './store/ui/uiSelector';
 import { fetchTenantsAsync } from './store/tenants/tenantsSlice';
 
 // Layout Components
@@ -24,6 +25,10 @@ import TenantUsers from './pages/TenantUsers';
 import Settings from './pages/Settings';
 import Billing from './pages/Billing';
 import Integrations from './pages/Integrations';
+import FiscalYears from './pages/FiscalYears';
+import AuditLogs from './pages/AuditLogs';
+import Roles from './pages/Roles';
+import Constants from './pages/Constants';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,7 +39,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 // Main Layout Component
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50">
+        <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
             <Sidebar />
             <div className="flex flex-col flex-1 overflow-hidden">
                 <Header />
@@ -49,6 +54,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 function App() {
     const { i18n } = useTranslation();
     const direction = useSelector(selectDirection);
+    const theme = useSelector(selectTheme);
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
@@ -59,6 +65,15 @@ function App() {
         document.documentElement.lang = direction === 'rtl' ? 'ur' : 'en';
         i18n.changeLanguage(direction === 'rtl' ? 'ur' : 'en');
     }, [direction, i18n]);
+
+    // Apply theme class to document element
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     // Fetch tenants only when authenticated and is SUPER_ADMIN
     useEffect(() => {
@@ -180,6 +195,46 @@ function App() {
                     <ProtectedRoute>
                         <MainLayout>
                             <Integrations />
+                        </MainLayout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/fiscal-years"
+                element={
+                    <ProtectedRoute>
+                        <MainLayout>
+                            <FiscalYears />
+                        </MainLayout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/audit-logs"
+                element={
+                    <ProtectedRoute>
+                        <MainLayout>
+                            <AuditLogs />
+                        </MainLayout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/roles"
+                element={
+                    <ProtectedRoute>
+                        <MainLayout>
+                            <Roles />
+                        </MainLayout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/constants"
+                element={
+                    <ProtectedRoute>
+                        <MainLayout>
+                            <Constants />
                         </MainLayout>
                     </ProtectedRoute>
                 }

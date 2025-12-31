@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({
     const cardClasses = [
         'card',
         paddingClasses[padding],
-        hover ? 'hover:shadow-lg transition-shadow cursor-pointer' : '',
+        hover ? 'hover:shadow-floating hover:-translate-y-1 cursor-pointer' : '',
         className,
     ].join(' ');
 

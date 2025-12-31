@@ -6,14 +6,16 @@ export enum AccountType {
     EXPENSE = 'expense',
 }
 
+
 export interface Account {
     id: string;
-    tenantId: string;
+    companyId: string;
+    tenantId?: string; // fallback
     code: string;
     name: string;
     description?: string;
     type: AccountType;
-    level: number;
+    level: string | number;
     parentId?: string;
     parent?: Account;
     children?: Account[];
@@ -29,7 +31,7 @@ export interface CreateAccountDto {
     code?: string;
     description?: string;
     type: AccountType;
-    level: number;
+    level: string | number;
     parentId?: string;
     isPosting?: boolean;
 }

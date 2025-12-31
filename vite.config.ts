@@ -31,7 +31,7 @@ export default defineConfig({
                         outDir: 'dist-electron',
                     },
                 },
-            },
+            }
         ]),
     ],
     resolve: {

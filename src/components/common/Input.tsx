@@ -16,8 +16,8 @@ const Input: React.FC<InputProps> = ({
     ...props
 }) => {
     const inputClasses = [
-        'input',
-        error ? 'input-error' : '',
+        'input transition-all duration-200',
+        error ? 'input-error animate-shake' : '',
         fullWidth ? 'w-full' : '',
         className,
     ].join(' ');

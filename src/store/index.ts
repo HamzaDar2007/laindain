@@ -13,6 +13,10 @@ import tenantUsersReducer from './tenant-users/tenantUsersSlice';
 import settingsReducer from './settings/settingsSlice';
 import billingReducer from './billing/billingSlice';
 import integrationsReducer from './integrations/integrationsSlice';
+import fiscalYearsReducer from './fiscal-years/fiscalYearsSlice';
+import auditLogsReducer from './audit-logs/auditLogsSlice';
+import rolesReducer from './roles/rolesSlice';
+import constantsReducer from './constants/constantsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -30,6 +34,10 @@ export const store = configureStore({
         settings: settingsReducer,
         billing: billingReducer,
         integrations: integrationsReducer,
+        fiscalYears: fiscalYearsReducer,
+        auditLogs: auditLogsReducer,
+        roles: rolesReducer,
+        constants: constantsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

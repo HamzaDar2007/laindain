@@ -9,6 +9,10 @@ const initialState: ReportState = {
     profitLoss: null,
     balanceSheet: null,
     cashFlow: null,
+    vatReport: null,
+    customerReport: null,
+    dashboardCharts: null,
+    expensesByCategory: null,
     isLoading: false,
     error: null,
 };
@@ -37,6 +41,26 @@ export const fetchBalanceSheetAsync = createAppAsyncThunk(
 export const fetchCashFlowAsync = createAppAsyncThunk(
     'reports/cashFlow',
     async (filter: ReportFilter) => await api.fetchCashFlow(filter)
+);
+
+export const fetchVatReportAsync = createAppAsyncThunk(
+    'reports/vatReport',
+    async (filter: ReportFilter) => await api.fetchVatReport(filter)
+);
+
+export const fetchCustomerReportAsync = createAppAsyncThunk(
+    'reports/customerReport',
+    async (filter: ReportFilter) => await api.fetchCustomerReport(filter)
+);
+
+export const fetchDashboardChartsAsync = createAppAsyncThunk(
+    'reports/dashboardCharts',
+    async (months: number = 6) => await api.fetchDashboardCharts(months)
+);
+
+export const fetchExpensesByCategoryAsync = createAppAsyncThunk(
+    'reports/expensesByCategory',
+    async (filter: ReportFilter) => await api.fetchExpensesByCategory(filter)
 );
 
 const reportsSlice = createSlice({
@@ -72,6 +96,18 @@ const reportsSlice = createSlice({
             })
             .addCase(fetchCashFlowAsync.fulfilled, (state, action) => {
                 state.cashFlow = action.payload;
+            })
+            .addCase(fetchVatReportAsync.fulfilled, (state, action) => {
+                state.vatReport = action.payload;
+            })
+            .addCase(fetchCustomerReportAsync.fulfilled, (state, action) => {
+                state.customerReport = action.payload;
+            })
+            .addCase(fetchDashboardChartsAsync.fulfilled, (state, action) => {
+                state.dashboardCharts = action.payload;
+            })
+            .addCase(fetchExpensesByCategoryAsync.fulfilled, (state, action) => {
+                state.expensesByCategory = action.payload;
             });
     },
 });

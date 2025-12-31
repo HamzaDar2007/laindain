@@ -1,9 +1,9 @@
 export interface User {
     id: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    roles: string[];
+    fullName: string;
+    companyId: string;
+    roles?: string[];
 }
 
 export interface AuthState {
@@ -25,10 +25,20 @@ export interface RegisterData {
     password: string;
     firstName: string;
     lastName: string;
+    companyName?: string;
+    countryCode: string;
+    phone?: string;
+    trn?: string;
 }
 
 export interface AuthResponse {
     user: User;
-    accessToken: string;
-    refreshToken: string;
+    access_token: string;
+    refreshToken?: string;
+}
+
+export interface RegisterResponse {
+    message: string;
+    user: User;
+    company: any;
 }

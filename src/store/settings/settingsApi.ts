@@ -2,21 +2,17 @@ import { apiClient } from '../common/apiHelper';
 import { UpdateUserSettingsDto, UpdateTenantSettingsDto, UserSettings, TenantSettings } from './settingsTypes';
 
 export const fetchUserSettings = async (): Promise<UserSettings> => {
-    const response = await apiClient.get('/settings/user');
-    return response.data;
+    return apiClient.get<UserSettings>('/settings/user');
 };
 
 export const fetchTenantSettings = async (): Promise<TenantSettings> => {
-    const response = await apiClient.get('/settings/tenant');
-    return response.data;
+    return apiClient.get<TenantSettings>('/settings/tenant');
 };
 
 export const updateUserSettings = async (data: UpdateUserSettingsDto): Promise<UserSettings> => {
-    const response = await apiClient.patch('/settings/user', data);
-    return response.data;
+    return apiClient.patch<UserSettings>('/settings/user', data);
 };
 
 export const updateTenantSettings = async (data: UpdateTenantSettingsDto): Promise<TenantSettings> => {
-    const response = await apiClient.patch('/settings/tenant', data);
-    return response.data;
+    return apiClient.patch<TenantSettings>('/settings/tenant', data);
 };

@@ -70,7 +70,9 @@ const tenantUsersSlice = createSlice({
             })
             .addCase(fetchTenantUsersAsync.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.error.message || 'Failed to fetch tenant users';
+                // Safely extract error message
+                const errorMsg = (action.payload as any)?.message || action.error.message || 'Failed to fetch tenant users';
+                state.error = errorMsg === 'Rejected' ? 'Unable to load users (Server Error)' : errorMsg;
             })
             .addCase(fetchTenantUserAsync.fulfilled, (state, action) => {
                 state.currentTenantUser = action.payload;

@@ -86,10 +86,8 @@ const voucherTypesSlice = createSlice({
             })
             // Delete
             .addCase(deleteVoucherTypeAsync.fulfilled, (state, action) => {
-                console.log('Delete fulfilled, payload:', action.payload);
-                console.log('Current types before filter:', JSON.parse(JSON.stringify(state.voucherTypes)));
+                // Removed debug logs
                 state.voucherTypes = state.voucherTypes.filter(vt => vt.id !== action.payload);
-                console.log('Current types after filter:', JSON.parse(JSON.stringify(state.voucherTypes)));
             });
     },
 });

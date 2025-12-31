@@ -30,14 +30,14 @@ export const updateInvoiceAsync = createAppAsyncThunk(
     async ({ id, data }: { id: string; data: UpdateInvoiceDto }) => await api.updateInvoice(id, data)
 );
 
-export const postInvoiceAsync = createAppAsyncThunk(
-    'invoices/post',
-    async (id: string) => await api.postInvoice(id)
+export const markInvoiceAsSentAsync = createAppAsyncThunk(
+    'invoices/markAsSent',
+    async (id: string) => await api.postInvoice(id) // keeping postInvoice name in api for now
 );
 
-export const cancelInvoiceAsync = createAppAsyncThunk(
-    'invoices/cancel',
-    async (id: string) => await api.cancelInvoice(id)
+export const markInvoiceAsPaidAsync = createAppAsyncThunk(
+    'invoices/markAsPaid',
+    async (id: string) => await api.updateInvoice(id, { status: 'paid' } as any) // Backend paid endpoint exists? 
 );
 
 export const deleteInvoiceAsync = createAppAsyncThunk(
@@ -80,11 +80,11 @@ const invoicesSlice = createSlice({
                 const index = state.invoices.findIndex(inv => inv.id === action.payload.id);
                 if (index !== -1) state.invoices[index] = action.payload;
             })
-            .addCase(postInvoiceAsync.fulfilled, (state, action) => {
+            .addCase(markInvoiceAsSentAsync.fulfilled, (state, action) => {
                 const index = state.invoices.findIndex(inv => inv.id === action.payload.id);
                 if (index !== -1) state.invoices[index] = action.payload;
             })
-            .addCase(cancelInvoiceAsync.fulfilled, (state, action) => {
+            .addCase(markInvoiceAsPaidAsync.fulfilled, (state, action) => {
                 const index = state.invoices.findIndex(inv => inv.id === action.payload.id);
                 if (index !== -1) state.invoices[index] = action.payload;
             })

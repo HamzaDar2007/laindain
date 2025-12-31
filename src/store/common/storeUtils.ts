@@ -5,7 +5,7 @@ import { handleApiError } from './apiHelper';
 export function createAppAsyncThunk<Returned, ThunkArg = void>(
     typePrefix: string,
     payloadCreator: (arg: ThunkArg) => Promise<Returned>
-): AsyncThunk<Returned, ThunkArg, {}> {
+): AsyncThunk<Returned, ThunkArg, object> {
     return createAsyncThunk<Returned, ThunkArg>(
         typePrefix,
         async (arg, { rejectWithValue }) => {
@@ -17,6 +17,9 @@ export function createAppAsyncThunk<Returned, ThunkArg = void>(
         }
     );
 }
+
+// Re-export for convenience
+export { handleApiError };
 
 // Helper to create loading state
 export interface LoadingState {
