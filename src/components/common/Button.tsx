@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, useState } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'outline';
@@ -15,15 +15,34 @@ const Button: React.FC<ButtonProps> = ({
     loading = false,
     disabled,
     className = '',
+    onClick,
     ...props
 }) => {
-    const baseClasses = 'btn';
+    const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const button = e.currentTarget;
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const newRipple = { x, y, id: Date.now() };
+        setRipples([...ripples, newRipple]);
+
+        setTimeout(() => {
+            setRipples(prev => prev.filter(r => r.id !== newRipple.id));
+        }, 600);
+
+        if (onClick) onClick(e);
+    };
+
+    const baseClasses = 'btn relative overflow-hidden';
 
     const variantClasses = {
-        primary: 'btn-primary shadow-lg hover:shadow-primary-500/30',
+        primary: 'btn-primary shadow-lg hover:shadow-primary transition-shadow',
         secondary: 'btn-secondary',
-        danger: 'btn-danger shadow-lg hover:shadow-danger-500/30',
-        success: 'btn-success shadow-lg hover:shadow-success-500/30',
+        danger: 'btn-danger shadow-lg hover:shadow-danger transition-shadow',
+        success: 'btn-success shadow-lg hover:shadow-success transition-shadow',
         outline: 'btn-outline',
     };
 
@@ -45,8 +64,23 @@ const Button: React.FC<ButtonProps> = ({
         <button
             className={classes}
             disabled={disabled || loading}
+            onClick={handleClick}
             {...props}
         >
+            {ripples.map(ripple => (
+                <span
+                    key={ripple.id}
+                    className="absolute bg-white/30 rounded-full animate-ping"
+                    style={{
+                        left: ripple.x,
+                        top: ripple.y,
+                        width: '20px',
+                        height: '20px',
+                        transform: 'translate(-50%, -50%)',
+                        pointerEvents: 'none',
+                    }}
+                />
+            ))}
             {loading ? (
                 <span className="flex items-center justify-center">
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -14,6 +14,7 @@ interface TableProps<T> {
     loading?: boolean;
     emptyMessage?: string;
     className?: string;
+    testId?: string;
 }
 
 function Table<T extends Record<string, any>>({
@@ -23,41 +24,42 @@ function Table<T extends Record<string, any>>({
     loading = false,
     emptyMessage = 'No data available',
     className = '',
+    testId,
 }: TableProps<T>) {
     if (loading) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/50">
+            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-900 rounded-2xl border border-slate-100 dark:border-gray-800" data-testid={testId ? `${testId}-loading` : undefined}>
                 <div className="relative">
-                    <div className="w-12 h-12 rounded-full border-4 border-gray-100 dark:border-gray-700"></div>
+                    <div className="w-12 h-12 rounded-full border-4 border-slate-100 dark:border-gray-800"></div>
                     <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-4 border-primary-500 border-t-transparent animate-spin"></div>
                 </div>
-                <p className="mt-4 text-gray-500 dark:text-gray-400 font-medium">Loading data...</p>
+                <p className="mt-4 text-slate-500 dark:text-slate-400 font-medium">Loading data...</p>
             </div>
         );
     }
 
     if (data.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-center">
+            <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-center" data-testid={testId ? `${testId}-empty` : undefined}>
                 <div className="w-16 h-16 bg-gray-50 dark:bg-gray-700/50 rounded-full flex items-center justify-center mb-4">
                     <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
                     </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No items found</h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-sm">{emptyMessage}</p>
+                <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">No items found</h3>
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm">{emptyMessage}</p>
             </div>
         );
     }
 
     return (
-        <div className={`table-container bg-white dark:bg-gray-800 shadow-card ${className}`}>
+        <div className={`table-container bg-white dark:bg-gray-900 shadow-sm border border-slate-100 dark:border-gray-800 rounded-2xl ${className}`}>
             <div className="overflow-x-auto">
-                <table className="table">
-                    <thead>
+                <table className="table" data-testid={testId}>
+                    <thead className="sticky top-0 z-10 backdrop-blur-md bg-slate-50/90 dark:bg-gray-800/90">
                         <tr>
                             {columns.map((column) => (
-                                <th key={column.key} className="whitespace-nowrap bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm sticky top-0 z-10">
+                                <th key={column.key} className="whitespace-nowrap bg-transparent px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-gray-800">
                                     <div className="flex items-center space-x-1">
                                         <span>{column.header}</span>
                                         {column.sortable && (
@@ -70,7 +72,7 @@ function Table<T extends Record<string, any>>({
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                    <tbody className="divide-y divide-slate-50 dark:divide-gray-800">
                         {data.map((item, index) => (
                             <tr
                                 key={index}
@@ -81,7 +83,7 @@ function Table<T extends Record<string, any>>({
                                 `}
                             >
                                 {columns.map((column) => (
-                                    <td key={column.key} className="whitespace-nowrap group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                                    <td key={column.key} className="whitespace-nowrap text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors border-b border-gray-50 dark:border-gray-800/50">
                                         {column.render
                                             ? column.render(item)
                                             : item[column.key]}

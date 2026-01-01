@@ -46,7 +46,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 relative overflow-hidden p-4">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-950 relative overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
             {/* Cinematic Background Atmosphere */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div

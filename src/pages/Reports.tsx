@@ -93,7 +93,7 @@ const Reports: React.FC = () => {
                     ))}
                 </tbody>
                 <tfoot>
-                    <tr className="font-bold bg-gray-50">
+                    <tr className="font-bold bg-slate-50 dark:bg-slate-900/50">
                         <td colSpan={2}>Total</td>
                         <td className="text-right">
                             {trialBalance.reduce((sum, item) => sum + item.debit, 0).toFixed(2)}
@@ -111,7 +111,7 @@ const Reports: React.FC = () => {
     );
 
     const renderProfitLoss = () => {
-        if (!profitLoss) return <div className="text-center py-8 text-gray-500">No data available</div>;
+        if (!profitLoss) return <div className="text-center py-8 text-slate-500">No data available</div>;
 
         return (
             <div className="space-y-6">
@@ -320,7 +320,7 @@ const Reports: React.FC = () => {
         switch (reportType) {
             case 'trial-balance':
                 return trialBalance.length > 0 ? renderTrialBalance() :
-                    <div className="text-center py-12 text-gray-500">No data available. Click "Generate Report" to load data.</div>;
+                    <div className="text-center py-12 text-slate-500">No data available. Click "Generate Report" to load data.</div>;
             case 'profit-loss':
                 return renderProfitLoss();
             case 'balance-sheet':
@@ -328,7 +328,7 @@ const Reports: React.FC = () => {
             case 'cash-flow':
                 return renderCashFlow();
             default:
-                return <div className="text-center py-12 text-gray-500">Select a report type</div>;
+                return <div className="text-center py-12 text-slate-500">Select a report type</div>;
         }
     };
 
@@ -345,7 +345,7 @@ const Reports: React.FC = () => {
                     <button
                         key={report.id}
                         onClick={() => setReportType(report.id as ReportType)}
-                        className={`card text-left hover:shadow-lg transition-all ${reportType === report.id ? 'ring-2 ring-primary-500 bg-primary-50' : ''
+                        className={`card text-left hover:shadow-lg transition-all ${reportType === report.id ? 'ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-900/10' : ''
                             }`}
                     >
                         <div className="flex items-start space-x-3">

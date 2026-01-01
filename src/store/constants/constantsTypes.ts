@@ -1,19 +1,37 @@
+export enum ConstantType {
+    CUSTOMER = 'customer',
+    SUPPLIER = 'supplier',
+    BOTH = 'both',
+}
+
 export interface Constant {
     id: string;
-    type: string;
-    key: string;
-    value: string;
-    description?: string;
+    code: string;
+    name: string;
+    type: ConstantType;
+    email?: string;
+    phone?: string;
+    address?: string;
+    taxRegistrationNo?: string;
+    creditLimit: number;
+    paymentTerms: number;
+    accountId?: string;
     isActive: boolean;
     createdAt: string;
     updatedAt: string;
 }
 
 export interface CreateConstantDto {
-    type: string;
-    key: string;
-    value: string;
-    description?: string;
+    code: string;
+    name: string;
+    type: ConstantType;
+    email?: string;
+    phone?: string;
+    address?: string;
+    taxRegistrationNo?: string;
+    creditLimit?: number;
+    paymentTerms?: number;
+    accountId?: string;
     isActive?: boolean;
 }
 

@@ -223,7 +223,8 @@
         "confirmPost": "کیا آپ واقعی اس رسید کو پوسٹ کرنا چاہتے ہیں؟",
         "statuses": {
             "draft": "مسودہ",
-            "posted": "پوسٹ شدہ",
+            "sent": "بھیجی گئی",
+            "paid": "ادا شدہ",
             "cancelled": "منسوخ شدہ"
         }
     },
@@ -267,10 +268,11 @@
         "newRole": "نیا کردار",
         "roles": {
             "super_admin": "سپر ایڈمن",
-            "tenant_owner": "مالک",
+            "owner": "مالک",
             "admin": "منتظم",
             "accountant": "اکاؤنٹنٹ",
             "manager": "مینیجر",
+            "staff": "عملہ",
             "user": "صارف",
             "viewer": "ناظر"
         },

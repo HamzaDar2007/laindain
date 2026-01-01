@@ -108,7 +108,7 @@ const Integrations: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">Integrations</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Integrations</h1>
                 <Button onClick={() => { resetForm(); setShowModal(true); }}>
                     Add Integration
                 </Button>
@@ -132,11 +132,11 @@ const Integrations: React.FC = () => {
                                 </div>
 
                                 {integration.description && (
-                                    <p className="text-sm text-gray-700">{integration.description}</p>
+                                    <p className="text-sm text-slate-700 dark:text-slate-300">{integration.description}</p>
                                 )}
 
                                 {integration.lastSyncAt && (
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">
                                         Last sync: {new Date(integration.lastSyncAt).toLocaleString()}
                                     </p>
                                 )}
@@ -189,7 +189,7 @@ const Integrations: React.FC = () => {
             )}
 
             {integrations.length === 0 && !isLoading && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-slate-500 dark:text-slate-400">
                     No integrations configured yet. Click "Add Integration" to get started.
                 </div>
             )}
@@ -227,7 +227,7 @@ const Integrations: React.FC = () => {
                     />
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
                         <textarea
                             className="input"
                             rows={3}

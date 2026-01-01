@@ -15,7 +15,7 @@ test.describe('New Modules E2E Tests', () => {
             await page.waitForLoadState('networkidle');
 
             // Check if payments page loaded
-            await expect(page.locator('h1, h2').filter({ hasText: /payment/i }).first()).toBeVisible();
+            await expect(page.getByTestId('payments-title')).toBeVisible();
         });
 
         test('should display payments table', async ({ page }) => {
@@ -23,8 +23,8 @@ test.describe('New Modules E2E Tests', () => {
             await page.waitForLoadState('networkidle');
 
             // Check for table or empty state
-            const hasTable = await page.locator('table').count() > 0;
-            const hasEmptyState = await page.locator('text=/no.*payment/i').count() > 0;
+            const hasTable = await page.getByTestId('payments-table').count() > 0;
+            const hasEmptyState = await page.getByTestId('payments-table-empty').count() > 0;
 
             expect(hasTable || hasEmptyState).toBeTruthy();
         });

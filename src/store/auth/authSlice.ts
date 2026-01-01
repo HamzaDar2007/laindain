@@ -3,8 +3,9 @@ import { AuthState, LoginCredentials, RegisterData, User } from './authTypes';
 import { createAppAsyncThunk } from '../common/storeUtils';
 import { authApi } from './authApi';
 
+const savedUser = localStorage.getItem('authUser');
 const initialState: AuthState = {
-    user: null,
+    user: savedUser ? JSON.parse(savedUser) : null,
     token: localStorage.getItem('authToken'),
     refreshToken: localStorage.getItem('refreshToken'),
     isAuthenticated: !!localStorage.getItem('authToken'),
@@ -55,10 +56,12 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             localStorage.removeItem('authToken');
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem('authUser');
             localStorage.removeItem('currentTenantId');
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
+            localStorage.setItem('authUser', JSON.stringify(action.payload));
         },
     },
     extraReducers: (builder) => {
@@ -73,6 +76,7 @@ const authSlice = createSlice({
             state.token = action.payload.access_token;
             state.refreshToken = action.payload.refreshToken || null;
             state.isAuthenticated = true;
+            localStorage.setItem('authUser', JSON.stringify(action.payload.user));
         });
         builder.addCase(loginAsync.rejected, (state, action) => {
             state.isLoading = false;

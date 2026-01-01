@@ -70,7 +70,7 @@ const TenantUsers: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">{t('users.title')}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('users.title')}</h1>
                 <Button onClick={() => setShowInviteModal(true)}>
                     {t('users.invite')}
                 </Button>
@@ -85,7 +85,7 @@ const TenantUsers: React.FC = () => {
             {isLoading ? (
                 <div className="text-center py-12">{t('common.loading')}</div>
             ) : tenantUsers?.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-slate-500 dark:text-slate-400">
                     No team members found. Try inviting someone!
                 </div>
             ) : (
@@ -93,12 +93,12 @@ const TenantUsers: React.FC = () => {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>{t('users.name')}</th>
-                                <th>{t('users.email')}</th>
-                                <th>{t('users.role')}</th>
-                                <th>{t('common.status')}</th>
-                                <th>{t('users.joinedAt')}</th>
-                                <th>{t('common.actions')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('users.name')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('users.email')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('users.role')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.status')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('users.joinedAt')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -191,7 +191,7 @@ const TenantUsers: React.FC = () => {
                 {selectedUser && (
                     <form onSubmit={handleUpdateRole} className="space-y-4">
                         <div>
-                            <p className="text-sm text-gray-600 mb-4">
+                            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
                                 {t('users.changingRoleFor')}: <strong>{selectedUser.email}</strong>
                             </p>
                         </div>

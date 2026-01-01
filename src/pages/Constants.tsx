@@ -13,7 +13,7 @@ import {
     selectConstantsLoading,
     selectConstantsError
 } from '../store/constants/constantsSelector';
-import { CreateConstantDto } from '../store/constants/constantsTypes';
+import { CreateConstantDto, ConstantType } from '../store/constants/constantsTypes';
 import { Button, Input, Select, Modal, Table, Card } from '../components/common';
 
 const Constants: React.FC = () => {
@@ -26,10 +26,15 @@ const Constants: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingConstant, setEditingConstant] = useState<any>(null);
     const [formData, setFormData] = useState<CreateConstantDto>({
-        type: '',
-        key: '',
-        value: '',
-        description: '',
+        code: '',
+        name: '',
+        type: ConstantType.CUSTOMER,
+        email: '',
+        phone: '',
+        address: '',
+        taxRegistrationNo: '',
+        creditLimit: 0,
+        paymentTerms: 30,
         isActive: true,
     });
 
@@ -54,10 +59,15 @@ const Constants: React.FC = () => {
 
     const resetForm = () => {
         setFormData({
-            type: '',
-            key: '',
-            value: '',
-            description: '',
+            code: '',
+            name: '',
+            type: ConstantType.CUSTOMER,
+            email: '',
+            phone: '',
+            address: '',
+            taxRegistrationNo: '',
+            creditLimit: 0,
+            paymentTerms: 30,
             isActive: true,
         });
         setEditingConstant(null);
@@ -66,31 +76,43 @@ const Constants: React.FC = () => {
     const handleEdit = (constant: any) => {
         setEditingConstant(constant);
         setFormData({
+            code: constant.code,
+            name: constant.name,
             type: constant.type,
-            key: constant.key,
-            value: constant.value,
-            description: constant.description || '',
+            email: constant.email || '',
+            phone: constant.phone || '',
+            address: constant.address || '',
+            taxRegistrationNo: constant.taxRegistrationNo || '',
+            creditLimit: constant.creditLimit || 0,
+            paymentTerms: constant.paymentTerms || 30,
             isActive: constant.isActive,
         });
         setIsModalOpen(true);
     };
 
     const handleDelete = async (id: string) => {
-        if (window.confirm(t('constants.confirmDelete'))) {
+        if (window.confirm(t('messages.deleteConfirm'))) {
             await dispatch(deleteConstantAsync(id));
         }
     };
 
     const columns = [
-        { key: 'type', header: t('constants.type') },
-        { key: 'key', header: t('constants.key') },
-        { key: 'value', header: t('constants.value') },
-        { key: 'description', header: t('constants.description') },
+        { key: 'code', header: t('constants.code') },
+        { key: 'name', header: t('constants.name') },
+        {
+            key: 'type',
+            header: t('constants.type'),
+            render: (record: any) => (
+                <span className="capitalize">{record.type}</span>
+            )
+        },
+        { key: 'email', header: t('constants.email') },
+        { key: 'phone', header: t('constants.phone') },
         {
             key: 'isActive',
-            header: t('constants.status'),
+            header: t('common.status'),
             render: (constant: any) => (
-                <span className={`px-2 py-1 rounded text-xs ${constant.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <span className={`badge ${constant.isActive ? 'badge-success' : 'badge-danger'}`}>
                     {constant.isActive ? t('common.active') : t('common.inactive')}
                 </span>
             )
@@ -100,12 +122,18 @@ const Constants: React.FC = () => {
             header: t('common.actions'),
             render: (record: any) => (
                 <div className="flex space-x-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEdit(record)}>
+                    <button
+                        onClick={() => handleEdit(record)}
+                        className="text-primary-600 hover:text-primary-700 text-sm"
+                    >
                         {t('common.edit')}
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => handleDelete(record.id)}>
+                    </button>
+                    <button
+                        onClick={() => handleDelete(record.id)}
+                        className="text-danger-600 hover:text-danger-700 text-sm"
+                    >
                         {t('common.delete')}
-                    </Button>
+                    </button>
                 </div>
             ),
         },
@@ -114,7 +142,7 @@ const Constants: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-900">{t('constants.title')}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('constants.title')}</h1>
                 <Button onClick={() => setIsModalOpen(true)}>
                     {t('constants.addConstant')}
                 </Button>
@@ -141,44 +169,88 @@ const Constants: React.FC = () => {
                     resetForm();
                 }}
                 title={editingConstant ? t('constants.editConstant') : t('constants.addConstant')}
+                size="2xl"
             >
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            label={t('constants.code')}
+                            value={formData.code}
+                            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                            required
+                        />
+                        <Select
+                            label={t('constants.type')}
+                            value={formData.type}
+                            onChange={(e) => setFormData({ ...formData, type: e.target.value as ConstantType })}
+                            options={[
+                                { value: ConstantType.CUSTOMER, label: 'Customer' },
+                                { value: ConstantType.SUPPLIER, label: 'Supplier' },
+                                { value: ConstantType.BOTH, label: 'Both' },
+                            ]}
+                        />
+                    </div>
                     <Input
-                        label={t('constants.type')}
-                        value={formData.type}
-                        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                        label={t('constants.name')}
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
                     />
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            label={t('constants.email')}
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        />
+                        <Input
+                            label={t('constants.phone')}
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        />
+                    </div>
                     <Input
-                        label={t('constants.key')}
-                        value={formData.key}
-                        onChange={(e) => setFormData({ ...formData, key: e.target.value })}
-                        required
+                        label={t('constants.address')}
+                        value={formData.address}
+                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     />
-                    <Input
-                        label={t('constants.value')}
-                        value={formData.value}
-                        onChange={(e) => setFormData({ ...formData, value: e.target.value })}
-                        required
-                    />
-                    <Input
-                        label={t('constants.description')}
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    />
-                    <Select
-                        label={t('constants.status')}
-                        value={formData.isActive ? 'true' : 'false'}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'true' })}
-                        options={[
-                            { value: 'true', label: t('common.active') },
-                            { value: 'false', label: t('common.inactive') },
-                        ]}
-                    />
-                    <div className="flex justify-end space-x-2">
+                    <div className="grid grid-cols-3 gap-4">
+                        <Input
+                            label={t('constants.taxRegistrationNo')}
+                            value={formData.taxRegistrationNo}
+                            onChange={(e) => setFormData({ ...formData, taxRegistrationNo: e.target.value })}
+                        />
+                        <Input
+                            label={t('constants.creditLimit')}
+                            type="number"
+                            value={formData.creditLimit}
+                            onChange={(e) => setFormData({ ...formData, creditLimit: parseFloat(e.target.value) })}
+                        />
+                        <Input
+                            label={t('constants.paymentTerms')}
+                            type="number"
+                            value={formData.paymentTerms}
+                            onChange={(e) => setFormData({ ...formData, paymentTerms: parseInt(e.target.value) })}
+                        />
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <input
+                            type="checkbox"
+                            id="isActive"
+                            checked={formData.isActive}
+                            onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                        />
+                        <label htmlFor="isActive" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {t('common.active')}
+                        </label>
+                    </div>
+
+                    <div className="flex justify-end space-x-3 pt-4">
                         <Button
                             type="button"
-                            variant="outline"
+                            variant="secondary"
                             onClick={() => {
                                 setIsModalOpen(false);
                                 resetForm();
@@ -187,7 +259,7 @@ const Constants: React.FC = () => {
                             {t('common.cancel')}
                         </Button>
                         <Button type="submit">
-                            {editingConstant ? t('common.update') : t('common.create')}
+                            {editingConstant ? t('common.save') : t('common.create')}
                         </Button>
                     </div>
                 </form>

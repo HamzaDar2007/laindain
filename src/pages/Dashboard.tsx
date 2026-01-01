@@ -136,17 +136,20 @@ const Dashboard: React.FC = () => {
                         <motion.div
                             key={index}
                             variants={itemVariants}
-                            className="card group relative overflow-hidden transform hover:-translate-y-1 transition-transform duration-300"
+                            className="relative overflow-hidden bg-gradient-to-br from-white to-slate-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl shadow-soft hover:shadow-floating border border-slate-100 dark:border-gray-800 transition-all duration-300 group"
                         >
-                            <div className="relative z-10 flex items-center justify-between">
-                                <div>
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors group-hover:text-gray-700 dark:group-hover:text-gray-200">{stat.title}</p>
-                                    <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
-                                </div>
-                                <div className={`p-3 rounded-xl ${stat.light} transition-colors duration-200`}>
-                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        {stat.icon}
-                                    </svg>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br opacity-10 rounded-full blur-2xl transition-opacity group-hover:opacity-20" style={{ background: stat.gradient.replace('from-', '').replace('to-', '').split(' ')[0] }} />
+                            <div className="relative z-10 p-6">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex-1">
+                                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">{stat.title}</p>
+                                        <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{stat.value}</p>
+                                    </div>
+                                    <div className={`p-4 rounded-2xl bg-gradient-to-br ${stat.gradient} shadow-lg transform group-hover:scale-110 transition-transform duration-300`}>
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            {stat.icon}
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                             <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${stat.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
@@ -157,7 +160,7 @@ const Dashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Revenue Chart Section */}
-                <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700/50">
+                <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-gray-800">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white">Revenue vs Expenses</h3>
                         <div className="flex gap-2">
@@ -194,12 +197,12 @@ const Dashboard: React.FC = () => {
 
                 {/* Account List */}
                 <motion.div variants={itemVariants} className="card p-0 overflow-hidden flex flex-col h-full">
-                    <div className="p-6 pb-2 border-b border-gray-100 dark:border-gray-700/50 flex justify-between items-center bg-gray-50/30 dark:bg-gray-800/30">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <div className="p-6 border-b border-slate-100 dark:border-gray-800 flex justify-between items-center bg-transparent">
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-3">
                             <span className="w-1.5 h-6 bg-primary-500 rounded-full"></span>
                             {t('nav.accounts')}
                         </h2>
-                        <button className="text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline">View All</button>
+                        <button className="text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline transition-all">View All</button>
                     </div>
                     <div className="p-4 flex-1">
                         {isLoading ? (
@@ -233,12 +236,12 @@ const Dashboard: React.FC = () => {
             </div>
 
             <motion.div variants={itemVariants} className="card p-0 overflow-hidden">
-                <div className="p-6 pb-2 border-b border-gray-100 dark:border-gray-700/50 flex justify-between items-center bg-gray-50/30 dark:bg-gray-800/30">
-                    <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="p-6 border-b border-slate-100 dark:border-gray-800 flex justify-between items-center bg-transparent">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-3">
                         <span className="w-1.5 h-6 bg-warning-500 rounded-full"></span>
                         {t('nav.journal')}
                     </h2>
-                    <button className="text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline">View All</button>
+                    <button className="text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline transition-all">View All</button>
                 </div>
                 <div className="p-4">
                     {isLoading ? (

@@ -14,6 +14,8 @@ import {
 } from '../store/payments/paymentsSlice';
 import { selectPostingAccounts } from '../store/accounts/accountsSelector';
 import { fetchPostingAccountsAsync } from '../store/accounts/accountsSlice';
+import { selectAllInvoices } from '../store/invoices/invoicesSelector';
+import { fetchInvoicesAsync } from '../store/invoices/invoicesSlice';
 import { CreatePaymentDto } from '../store/payments/paymentsTypes';
 import Modal from '../components/common/Modal';
 import Button from '../components/common/Button';
@@ -25,6 +27,7 @@ const Payments: React.FC = () => {
     const dispatch = useDispatch();
     const payments = useSelector(selectAllPayments);
     const postingAccounts = useSelector(selectPostingAccounts);
+    const invoices = useSelector(selectAllInvoices);
     const isLoading = useSelector(selectPaymentsLoading);
 
     const [showModal, setShowModal] = useState(false);
@@ -35,11 +38,13 @@ const Payments: React.FC = () => {
         reference: '',
         notes: '',
         accountId: '',
+        invoiceId: '',
     });
 
     useEffect(() => {
         dispatch(fetchPaymentsAsync() as any);
         dispatch(fetchPostingAccountsAsync() as any);
+        dispatch(fetchInvoicesAsync() as any);
     }, [dispatch]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -53,6 +58,7 @@ const Payments: React.FC = () => {
             reference: '',
             notes: '',
             accountId: '',
+            invoiceId: '',
         });
     };
 
@@ -77,7 +83,7 @@ const Payments: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">{t('payments.title')}</h1>
+                <h1 data-testid="payments-title" className="text-3xl font-bold text-slate-900 dark:text-white">{t('payments.title')}</h1>
                 <Button onClick={() => setShowModal(true)}>
                     {t('payments.create')}
                 </Button>
@@ -87,16 +93,16 @@ const Payments: React.FC = () => {
                 <div className="text-center py-12">{t('common.loading')}</div>
             ) : (
                 <div className="card">
-                    <table className="table">
+                    <table data-testid="payments-table" className="table">
                         <thead>
                             <tr>
-                                <th>{t('payments.paymentNumber')}</th>
-                                <th>{t('payments.date')}</th>
-                                <th>{t('payments.paymentMethod')}</th>
-                                <th>{t('payments.amount')}</th>
-                                <th>{t('payments.reference')}</th>
-                                <th>{t('common.status')}</th>
-                                <th>{t('common.actions')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('payments.paymentNumber')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('payments.date')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('payments.paymentMethod')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('payments.amount')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('payments.reference')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.status')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,7 +115,7 @@ const Payments: React.FC = () => {
                                     <td>{payment.reference || '-'}</td>
                                     <td>
                                         <span className={`badge ${payment.status === 'confirmed' ? 'badge-success' :
-                                                payment.status === 'cancelled' ? 'badge-danger' : 'badge-warning'
+                                            payment.status === 'cancelled' ? 'badge-danger' : 'badge-warning'
                                             }`}>
                                             {t(`payments.statuses.${payment.status}`)}
                                         </span>
@@ -186,6 +192,17 @@ const Payments: React.FC = () => {
                         ))}
                     </Select>
 
+                    <Select
+                        label={t('invoices.title')}
+                        value={formData.invoiceId}
+                        onChange={(e) => setFormData({ ...formData, invoiceId: e.target.value })}
+                    >
+                        <option value="">{t('common.none')}</option>
+                        {invoices.filter(inv => inv.status === 'sent').map(inv => (
+                            <option key={inv.id} value={inv.id}>{inv.invoiceNumber} - {inv.customerName}</option>
+                        ))}
+                    </Select>
+
                     <Input
                         label={t('payments.reference')}
                         value={formData.reference}
@@ -193,7 +210,7 @@ const Payments: React.FC = () => {
                     />
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('payments.notes')}</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('payments.notes')}</label>
                         <textarea
                             className="input"
                             rows={3}

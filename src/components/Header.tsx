@@ -1,77 +1,81 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectUser } from '../store/auth/authSelector';
 import { selectCurrentTenant } from '../store/tenants/tenantsSelector';
-import { logout } from '../store/auth/authSlice';
 import { selectTheme } from '../store/ui/uiSelector';
-import { setTheme } from '../store/ui/uiSlice';
-import LanguageSwitcher from './LanguageSwitcher';
+import { setTheme, toggleSidebar } from '../store/ui/uiSlice';
 
 const Header: React.FC = () => {
-    const { t } = useTranslation();
+    const { i18n } = useTranslation();
     const user = useSelector(selectUser);
     const currentTenant = useSelector(selectCurrentTenant);
     const theme = useSelector(selectTheme);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate('/login');
-    };
 
     return (
-        <header className="sticky top-0 z-10 glass border-b border-gray-200 dark:border-gray-700/50 px-6 py-4 transition-all duration-200">
-            <div className="flex items-center justify-between">
+        <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-slate-200 dark:border-gray-800 shadow-sm transition-all duration-300">
+            <div className="flex items-center justify-between px-6 py-4">
                 <div className="flex items-center space-x-4">
-                    <h1 className="text-2xl font-bold text-primary-600">
-                        {t('app.title')}
-                    </h1>
+                    {/* Burger Menu Button */}
+                    <button
+                        onClick={() => dispatch(toggleSidebar())}
+                        className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-all duration-200 group"
+                        aria-label="Toggle Sidebar"
+                    >
+                        <svg className="w-6 h-6 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
                     {currentTenant && (
-                        <div className="flex items-center space-x-2 px-3 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-full border border-primary-100 dark:border-primary-800 transition-colors">
-                            <svg className="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                            <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
+                        <div className="flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 rounded-xl border border-primary-100 dark:border-primary-800/30">
+                            <div className="w-2 h-2 bg-gradient-to-r from-primary-500 to-purple-500 rounded-full animate-pulse" />
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">
                                 {currentTenant.name}
                             </span>
                         </div>
                     )}
                 </div>
 
-
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
+                    {/* Theme Toggle */}
                     <button
-                        onClick={() => dispatch(setTheme(theme === 'light' ? 'dark' : 'light'))}
-                        className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-all active:scale-95"
+                        onClick={() => dispatch(setTheme(theme === 'dark' ? 'light' : 'dark'))}
+                        className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-800 transition-all duration-200 group relative overflow-hidden"
                         aria-label="Toggle Theme"
                     >
-                        {theme === 'light' ? (
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                            </svg>
-                        ) : (
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <svg className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-all group-hover:rotate-180 duration-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {theme === 'dark' ? (
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        )}
+                            ) : (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            )}
+                        </svg>
                     </button>
-                    <LanguageSwitcher />
 
+                    {/* Language Selector */}
+                    <select
+                        value={i18n.language}
+                        onChange={(e) => i18n.changeLanguage(e.target.value)}
+                        className="px-4 py-2 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200"
+                    >
+                        <option value="en">English</option>
+                        <option value="ur">اردو</option>
+                    </select>
+
+                    {/* User Menu */}
                     {user && (
-                        <div className="flex items-center space-x-3">
-                            <div className="text-right">
-                                <p className="text-sm font-medium text-gray-900 dark:text-white">{user.fullName}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                        <div className="flex items-center space-x-3 px-4 py-2 bg-slate-50 dark:bg-gray-800 rounded-xl border border-slate-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-200 group">
+                            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-500 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                                <span className="text-white text-sm font-bold">
+                                    {user.fullName?.charAt(0) || 'U'}
+                                </span>
                             </div>
-                            <button
-                                onClick={handleLogout}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-danger-600 dark:hover:text-danger-400 transition-colors"
-                            >
-                                {t('auth.logout')}
-                            </button>
+                            <span data-testid="user-name" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                {user.fullName || 'User'}
+                            </span>
                         </div>
                     )}
                 </div>

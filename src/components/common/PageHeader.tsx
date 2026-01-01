@@ -4,13 +4,14 @@ interface PageHeaderProps {
     title: string;
     description?: string;
     actions?: React.ReactNode;
+    testId?: string;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title, description, actions }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ title, description, actions, testId }) => {
     return (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight" data-testid={testId}>
                     {title}
                 </h1>
                 {description && (

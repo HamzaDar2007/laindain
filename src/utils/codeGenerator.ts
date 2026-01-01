@@ -13,7 +13,7 @@ const typeToLevel1Code: Record<AccountType, number> = {
     [AccountType.ASSET]: 1,
     [AccountType.LIABILITY]: 2,
     [AccountType.EQUITY]: 3,
-    [AccountType.REVENUE]: 4,
+    [AccountType.INCOME]: 4,
     [AccountType.EXPENSE]: 5,
 };
 

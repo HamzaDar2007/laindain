@@ -73,7 +73,7 @@ const Billing: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Billing & Subscription</h1>
                 {subscription && subscription.status !== 'cancelled' && (
                     <Button onClick={() => setShowModal(true)}>
                         Update Subscription
@@ -136,8 +136,8 @@ const Billing: React.FC = () => {
                                         </div>
                                     )}
                                     <div>
-                                        <p className="text-sm text-gray-600">Auto Renew</p>
-                                        <p className="font-semibold">
+                                        <p className="text-sm text-slate-600 dark:text-slate-400">Auto Renew</p>
+                                        <p className="font-semibold text-slate-900 dark:text-white">
                                             {subscription.autoRenew ? 'Yes' : 'No'}
                                         </p>
                                     </div>
@@ -165,11 +165,11 @@ const Billing: React.FC = () => {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Type</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Description</th>
+                                        <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">Date</th>
+                                        <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">Type</th>
+                                        <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">Amount</th>
+                                        <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">Status</th>
+                                        <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -225,7 +225,7 @@ const Billing: React.FC = () => {
                             onChange={(e) => setFormData({ ...formData, autoRenew: e.target.checked })}
                             className="mr-2"
                         />
-                        <label htmlFor="autoRenew" className="text-sm font-medium text-gray-700">
+                        <label htmlFor="autoRenew" className="text-sm font-medium text-slate-700 dark:text-slate-300">
                             Auto Renew
                         </label>
                     </div>

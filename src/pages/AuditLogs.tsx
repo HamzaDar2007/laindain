@@ -15,17 +15,17 @@ const AuditLogs: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-gray-900">{t('nav.auditLogs')}</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('nav.auditLogs')}</h1>
 
             <div className="card overflow-hidden">
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>{t('common.date')}</th>
-                            <th>{t('common.user')}</th>
-                            <th>{t('auditLogs.action')}</th>
-                            <th>{t('auditLogs.entity')}</th>
-                            <th>{t('auditLogs.details')}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.date')}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.user')}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('auditLogs.action')}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('auditLogs.entity')}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('auditLogs.details')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,8 +36,8 @@ const AuditLogs: React.FC = () => {
                                 </td>
                                 <td>
                                     <div className="flex flex-col">
-                                        <span className="font-medium text-gray-900">{log.user?.fullName || 'System'}</span>
-                                        <span className="text-xs text-gray-500">{log.user?.email || ''}</span>
+                                        <span className="font-medium text-slate-900 dark:text-white">{log.user?.fullName || 'System'}</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">{log.user?.email || ''}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -47,11 +47,11 @@ const AuditLogs: React.FC = () => {
                                 </td>
                                 <td>
                                     <div className="flex items-center text-sm">
-                                        <span className="text-gray-900 font-medium">{log.entityType}</span>
-                                        <span className="ml-1 text-gray-400 font-mono text-xs">({log.entityId.substring(0, 8)})</span>
+                                        <span className="text-slate-900 dark:text-white font-medium">{log.entityType}</span>
+                                        <span className="ml-1 text-slate-400 dark:text-slate-500 font-mono text-xs">({log.entityId.substring(0, 8)})</span>
                                     </div>
                                 </td>
-                                <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-600">
+                                <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
                                     {log.newValue ? JSON.stringify(log.newValue) : '-'}
                                 </td>
                             </tr>
@@ -59,7 +59,7 @@ const AuditLogs: React.FC = () => {
                     </tbody>
                 </table>
                 {logs.length === 0 && !isLoading && (
-                    <div className="text-center py-12 text-gray-500">
+                    <div className="text-center py-12 text-slate-500 dark:text-slate-400">
                         No activity logs found.
                     </div>
                 )}

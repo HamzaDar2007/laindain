@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-gray-900/50 dark:bg-black/60 backdrop-blur-sm transition-opacity"
+                className="fixed inset-0 bg-slate-900/40 dark:bg-black/80 backdrop-blur-md transition-opacity"
                 onClick={onClose}
                 aria-hidden="true"
             />
@@ -58,14 +58,14 @@ const Modal: React.FC<ModalProps> = ({
             {/* Modal */}
             <div className="flex min-h-full items-center justify-center p-4">
                 <div
-                    className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-floating w-full ${sizeClasses[size]} transform transition-all animate-scale-up border border-gray-100 dark:border-gray-700/50`}
+                    className={`relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full ${sizeClasses[size]} transform transition-all animate-scale-up border border-slate-100 dark:border-gray-800`}
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header */}
                     {(title || showCloseButton) && (
                         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-gray-700/50">
                             {title && (
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{title}</h3>
                             )}
                             {showCloseButton && (
                                 <button

@@ -98,7 +98,7 @@ const VoucherTypes: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">{t('voucherTypes.title')}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('voucherTypes.title')}</h1>
                 <Button onClick={handleCreate}>
                     {t('voucherTypes.create')}
                 </Button>
@@ -111,11 +111,11 @@ const VoucherTypes: React.FC = () => {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>{t('voucherTypes.code')}</th>
-                                <th>{t('voucherTypes.name')}</th>
-                                <th>{t('voucherTypes.nature')}</th>
-                                <th>{t('common.status')}</th>
-                                <th>{t('common.actions')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('voucherTypes.code')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('voucherTypes.name')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('voucherTypes.nature')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.status')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -196,7 +196,7 @@ const VoucherTypes: React.FC = () => {
                                 checked={formData.autoNumbering}
                                 onChange={(e) => setFormData({ ...formData, autoNumbering: e.target.checked })}
                             />
-                            <span className="text-sm text-gray-700">{t('voucherTypes.autoNumbering')}</span>
+                            <span className="text-sm text-slate-700 dark:text-slate-300">{t('voucherTypes.autoNumbering')}</span>
                         </label>
                         <label className="flex items-center space-x-2">
                             <input
@@ -205,7 +205,7 @@ const VoucherTypes: React.FC = () => {
                                 checked={formData.requiresApproval}
                                 onChange={(e) => setFormData({ ...formData, requiresApproval: e.target.checked })}
                             />
-                            <span className="text-sm text-gray-700">{t('voucherTypes.requiresApproval')}</span>
+                            <span className="text-sm text-slate-700 dark:text-slate-300">{t('voucherTypes.requiresApproval')}</span>
                         </label>
                     </div>
 

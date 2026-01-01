@@ -38,10 +38,10 @@ const Card: React.FC<CardProps> = ({
             {(title || subtitle) && (
                 <div className="mb-4">
                     {title && (
-                        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h3>
                     )}
                     {subtitle && (
-                        <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
+                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{subtitle}</p>
                     )}
                 </div>
             )}
@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> = ({
             <div>{children}</div>
 
             {footer && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
                     {footer}
                 </div>
             )}

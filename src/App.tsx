@@ -75,9 +75,9 @@ function App() {
         }
     }, [theme]);
 
-    // Fetch tenants only when authenticated and is SUPER_ADMIN
+    // Fetch tenants only when authenticated and is super_admin
     useEffect(() => {
-        if (isAuthenticated && user?.roles?.includes('SUPER_ADMIN')) {
+        if (isAuthenticated && user?.roles?.includes('super_admin')) {
             dispatch(fetchTenantsAsync() as any);
         }
     }, [isAuthenticated, user, dispatch]);

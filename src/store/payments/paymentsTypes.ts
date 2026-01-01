@@ -8,6 +8,7 @@ export interface Payment {
     reference?: string;
     notes?: string;
     accountId: string;
+    invoiceId?: string;
     createdAt: string;
     updatedAt: string;
     companyId: string;
@@ -28,6 +29,7 @@ export interface CreatePaymentDto {
     reference?: string;
     notes?: string;
     accountId: string;
+    invoiceId?: string;
 }
 
 export interface UpdatePaymentDto {

@@ -14,7 +14,7 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 font-sans dark:bg-gray-900 dark:text-white transition-colors duration-200;
+    @apply bg-slate-50 text-slate-900 font-sans dark:bg-gray-950 dark:text-slate-100 transition-colors duration-200;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
@@ -39,6 +39,7 @@
 }
 
 @layer components {
+
   /* Glassmorphism */
   .glass {
     @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-soft;
@@ -46,16 +47,16 @@
 
   /* Premium Card */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-card p-6 border border-gray-100 dark:border-gray-700/50 transition-all duration-300;
+    @apply bg-white dark:bg-gray-900 rounded-2xl shadow-sm hover:shadow-md p-6 border border-slate-100 dark:border-gray-800 transition-all duration-300;
   }
-  
+
   .card:hover {
-     @apply shadow-floating transform -translate-y-1;
+    @apply shadow-floating transform -translate-y-1;
   }
 
   /* Button Variants */
   .btn {
-    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+    @apply px-5 py-2.5 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
   }
 
   .btn-primary {
@@ -73,7 +74,7 @@
   .btn-success {
     @apply bg-gradient-to-r from-success-600 to-success-500 text-white shadow-lg shadow-success-500/30 hover:shadow-success-500/40 hover:-translate-y-0.5 focus:ring-success-500 border border-transparent;
   }
-  
+
   .btn-outline {
     @apply bg-transparent border-2 border-primary-500 text-primary-600 hover:bg-primary-50 focus:ring-primary-500;
   }
@@ -89,7 +90,7 @@
 
   /* Table Styles */
   .table-container {
-      @apply rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm;
+    @apply rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm;
   }
 
   .table {
@@ -107,9 +108,9 @@
   .table tr:hover td {
     @apply bg-gray-50/50 dark:bg-gray-700/30;
   }
-  
+
   .table tr:last-child td {
-      @apply border-b-0;
+    @apply border-b-0;
   }
 
   /* Badge */
@@ -136,16 +137,18 @@
 
 @layer utilities {
   .text-glow {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   }
-  
+
   .animate-delay-100 {
-      animation-delay: 100ms;
+    animation-delay: 100ms;
   }
+
   .animate-delay-200 {
-      animation-delay: 200ms;
+    animation-delay: 200ms;
   }
+
   .animate-delay-300 {
-      animation-delay: 300ms;
+    animation-delay: 300ms;
   }
 }

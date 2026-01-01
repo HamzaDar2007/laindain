@@ -19,11 +19,15 @@ import Input from '../components/common/Input';
 import Table from '../components/common/Table';
 import PageHeader from '../components/common/PageHeader';
 import Select from '../components/common/Select';
+import { fetchConstantsAsync } from '../store/constants/constantsSlice';
+import { selectConstants } from '../store/constants/constantsSelector';
+import { ConstantType } from '../store/constants/constantsTypes';
 
 const Invoices: React.FC = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const invoices = useSelector(selectAllInvoices);
+    const customers = useSelector(selectConstants).filter(c => c.type === ConstantType.CUSTOMER || c.type === ConstantType.BOTH);
     const isLoading = useSelector(selectInvoicesLoading);
 
     const [showModal, setShowModal] = useState(false);
@@ -43,6 +47,7 @@ const Invoices: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchInvoicesAsync() as any);
+        dispatch(fetchConstantsAsync() as any);
     }, [dispatch]);
 
     const handleAddLine = () => {
@@ -147,8 +152,8 @@ const Invoices: React.FC = () => {
             header: t('common.status'),
             render: (invoice: Invoice) => (
                 <span className={`badge ${invoice.status === 'sent' ? 'badge-info' :
-                        invoice.status === 'paid' ? 'badge-success' :
-                            invoice.status === 'cancelled' ? 'badge-danger' : 'badge-warning'
+                    invoice.status === 'paid' ? 'badge-success' :
+                        invoice.status === 'cancelled' ? 'badge-danger' : 'badge-warning'
                     }`}>
                     {t(`invoices.statuses.${invoice.status}`)}
                 </span>
@@ -190,6 +195,7 @@ const Invoices: React.FC = () => {
         <div className="space-y-6 animate-fade-in">
             <PageHeader
                 title={t('invoices.title')}
+                testId="invoices-title"
                 description="Manage your invoices, payments, and customers."
                 actions={
                     <Button onClick={() => setShowModal(true)} className="shadow-lg hover:shadow-primary-500/30">
@@ -201,7 +207,7 @@ const Invoices: React.FC = () => {
                 }
             />
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/50">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-800">
                 <div className="relative w-full sm:w-96">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -235,6 +241,7 @@ const Invoices: React.FC = () => {
                 data={filteredInvoices}
                 columns={columns}
                 loading={isLoading}
+                testId="invoices-table"
                 emptyMessage="No invoices found matching your criteria."
             />
 
@@ -262,14 +269,18 @@ const Invoices: React.FC = () => {
                         />
                     </div>
 
-                    <Input
+                    <Select
                         label={t('invoices.customer')}
                         name="customerId"
-                        placeholder="Customer ID or Search"
                         value={formData.customerId}
                         onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}
                         required
-                    />
+                    >
+                        <option value="">{t('common.select')}</option>
+                        {customers.map(c => (
+                            <option key={c.id} value={c.id}>{c.name} ({c.code})</option>
+                        ))}
+                    </Select>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Input
@@ -285,7 +296,7 @@ const Invoices: React.FC = () => {
                         />
                     </div>
 
-                    <div className="border border-gray-100 dark:border-gray-700 rounded-xl p-4 bg-gray-50 dark:bg-gray-800/50">
+                    <div className="border border-slate-100 dark:border-gray-800 rounded-xl p-4 bg-slate-50 dark:bg-gray-900/50">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-semibold text-gray-900 dark:text-white">{t('invoices.lineItems')}</h3>
                             <Button type="button" variant="secondary" size="sm" onClick={handleAddLine}>
@@ -334,7 +345,7 @@ const Invoices: React.FC = () => {
                             </div>
                         ))}
 
-                        <div className="flex justify-end items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="flex justify-end items-center mt-6 pt-4 border-t border-slate-200 dark:border-gray-700">
                             <span className="text-gray-500 mr-4">Total Amount</span>
                             <span className="text-2xl font-bold text-gray-900 dark:text-white">{totalAmount.toFixed(2)}</span>
                         </div>

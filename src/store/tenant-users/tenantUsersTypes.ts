@@ -13,13 +13,14 @@ export interface TenantUser {
 }
 
 export enum UserRole {
-    SUPER_ADMIN = 'SUPER_ADMIN',
-    TENANT_OWNER = 'TENANT_OWNER',
-    ADMIN = 'ADMIN',
-    ACCOUNTANT = 'ACCOUNTANT',
-    MANAGER = 'MANAGER',
-    USER = 'USER',
-    VIEWER = 'VIEWER',
+    SUPER_ADMIN = 'super_admin',
+    OWNER = 'owner',
+    ADMIN = 'admin',
+    ACCOUNTANT = 'accountant',
+    MANAGER = 'manager',
+    USER = 'user',
+    STAFF = 'staff',
+    VIEWER = 'viewer',
 }
 
 export interface TenantUserState {

@@ -46,7 +46,7 @@ const FiscalYears: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">{t('fiscalYears.title')}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('fiscalYears.title')}</h1>
                 <Button onClick={() => setShowModal(true)}>
                     {t('fiscalYears.create')}
                 </Button>
@@ -59,11 +59,11 @@ const FiscalYears: React.FC = () => {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>{t('fiscalYears.name')}</th>
-                                <th>{t('fiscalYears.startDate')}</th>
-                                <th>{t('fiscalYears.endDate')}</th>
-                                <th>{t('common.status')}</th>
-                                <th>{t('common.actions')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('fiscalYears.name')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('fiscalYears.startDate')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('fiscalYears.endDate')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.status')}</th>
+                                <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">{t('common.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
