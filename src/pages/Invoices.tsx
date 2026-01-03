@@ -312,6 +312,7 @@ const Invoices: React.FC = () => {
                                 <div className="col-span-5">
                                     <Input
                                         placeholder={t('invoices.description')}
+                                        name={`description-${index}`}
                                         value={item.description}
                                         onChange={(e) => handleLineChange(index, 'description', e.target.value)}
                                         required
@@ -322,6 +323,7 @@ const Invoices: React.FC = () => {
                                     <Input
                                         type="number"
                                         placeholder="Qty"
+                                        name={`quantity-${index}`}
                                         value={item.quantity}
                                         onChange={(e) => handleLineChange(index, 'quantity', parseFloat(e.target.value))}
                                         required
@@ -333,6 +335,7 @@ const Invoices: React.FC = () => {
                                         type="number"
                                         step="0.01"
                                         placeholder="Price"
+                                        name={`unitPrice-${index}`}
                                         value={item.unitPrice}
                                         onChange={(e) => handleLineChange(index, 'unitPrice', parseFloat(e.target.value))}
                                         required

@@ -72,10 +72,6 @@ const Accounts: React.FC = () => {
 
             await dispatch(createAccountAsync(payload as any) as any).unwrap();
 
-            // Refresh both the flat list and tree view
-            await dispatch(fetchAccountsAsync() as any);
-            await dispatch(fetchAccountTreeAsync() as any);
-
             setShowModal(false);
             setFormData({
                 name: '',
@@ -84,7 +80,11 @@ const Accounts: React.FC = () => {
                 description: '',
             });
             toast.success(t('accounts.createSuccess') || 'Account created successfully');
+
+            await dispatch(fetchAccountsAsync() as any);
+            await dispatch(fetchAccountTreeAsync() as any);
         } catch (error: any) {
+            console.error('Account operation failed:', error);
             toast.error(error.message || t('common.error'));
         }
     };
@@ -94,6 +94,8 @@ const Accounts: React.FC = () => {
         if (window.confirm(t('common.confirmDelete'))) {
             try {
                 await dispatch(deleteAccountAsync(id) as any).unwrap();
+                // Refresh both list and tree
+                await dispatch(fetchAccountsAsync() as any);
                 await dispatch(fetchAccountTreeAsync() as any);
                 toast.success(t('accounts.deleteSuccess') || 'Account deleted successfully');
             } catch (error: any) {
@@ -287,6 +289,7 @@ const Accounts: React.FC = () => {
                         </label>
                         <Select
                             value={formData.level}
+                            name="level"
                             onChange={(e) => {
                                 const newLevel = parseInt(e.target.value);
                                 setFormData({
@@ -316,6 +319,7 @@ const Accounts: React.FC = () => {
                             </label>
                             <Select
                                 value={formData.type}
+                                name="type"
                                 onChange={(e) => setFormData({ ...formData, type: e.target.value as AccountType })}
                                 options={[
                                     { value: AccountType.ASSET, label: t('accounts.types.asset') },
@@ -335,6 +339,7 @@ const Accounts: React.FC = () => {
                             </label>
                             <Select
                                 value={formData.parentId || ''}
+                                name="parentId"
                                 required
                                 onChange={(e) => {
                                     const parentAccount = accounts.find(a => a.id === e.target.value);

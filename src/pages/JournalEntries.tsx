@@ -80,27 +80,35 @@ const JournalEntries: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('Journal Submit Clicked. Form Data:', formData);
 
         if (!isBalanced()) {
+            console.log('Journal not balanced:', getTotalDebit(), getTotalCredit());
             alert(t('journal.validation.balanceRequired'));
             return;
         }
 
-        await dispatch(createJournalAsync(formData) as any);
-        await dispatch(fetchJournalsAsync() as any);
-        setShowModal(false);
-        setFormData({
-            entryDate: new Date().toISOString().split('T')[0],
-            postingDate: new Date().toISOString().split('T')[0],
-            description: '',
-            voucherTypeId: voucherTypes.length > 0 ? voucherTypes[0].id : '',
-            voucherNo: '',
-            reference: '',
-            lines: [
-                { accountId: '', debit: 0, credit: 0, description: '' },
-                { accountId: '', debit: 0, credit: 0, description: '' },
-            ],
-        });
+        try {
+            console.log('Dispatching createJournalAsync...');
+            const result = await dispatch(createJournalAsync(formData) as any);
+            console.log('Dispatch result:', result);
+            await dispatch(fetchJournalsAsync() as any);
+            setShowModal(false);
+            setFormData({
+                entryDate: new Date().toISOString().split('T')[0],
+                postingDate: new Date().toISOString().split('T')[0],
+                description: '',
+                voucherTypeId: voucherTypes.length > 0 ? voucherTypes[0].id : '',
+                voucherNo: '',
+                reference: '',
+                lines: [
+                    { accountId: '', debit: 0, credit: 0, description: '' },
+                    { accountId: '', debit: 0, credit: 0, description: '' },
+                ],
+            });
+        } catch (error) {
+            console.error('Error creating journal:', error);
+        }
     };
 
     const handlePost = async (id: string) => {
@@ -232,7 +240,6 @@ const JournalEntries: React.FC = () => {
                             type="text"
                             name="voucherNo"
                             data-testid="voucherNo"
-                            required
                             className="input font-mono"
                             placeholder="AUTO-GENERATED"
                             value={formData.voucherNo || ''}

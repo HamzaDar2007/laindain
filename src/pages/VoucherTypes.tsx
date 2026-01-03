@@ -160,12 +160,14 @@ const VoucherTypes: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <Input
                         label={t('voucherTypes.code')}
+                        name="code"
                         value={formData.code}
                         onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                         required
                     />
                     <Input
                         label={t('voucherTypes.name')}
+                        name="name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
@@ -173,16 +175,18 @@ const VoucherTypes: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <Select
                             label={t('voucherTypes.nature')}
+                            name="nature"
                             value={formData.nature}
                             onChange={(e) => setFormData({ ...formData, nature: e.target.value as VoucherNature })}
                             required
                         >
-                            {Object.values(VoucherNature).map(val => (
+                            {['payment', 'receipt', 'journal', 'contra', 'sales', 'purchase', 'credit_note', 'debit_note', 'opening'].map(val => (
                                 <option key={val} value={val}>{val}</option>
                             ))}
                         </Select>
                         <Input
                             label={t('voucherTypes.prefix')}
+                            name="prefix"
                             value={formData.prefix}
                             onChange={(e) => setFormData({ ...formData, prefix: e.target.value })}
                         />
@@ -192,6 +196,7 @@ const VoucherTypes: React.FC = () => {
                         <label className="flex items-center space-x-2">
                             <input
                                 type="checkbox"
+                                name="autoNumbering"
                                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                                 checked={formData.autoNumbering}
                                 onChange={(e) => setFormData({ ...formData, autoNumbering: e.target.checked })}

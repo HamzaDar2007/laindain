@@ -36,6 +36,14 @@ export default defineConfig({
             },
             dependencies: ['setup'],
         },
+        {
+            name: 'manual',
+            use: {
+                ...devices['Desktop Chrome'],
+                // No storage state, let the test handle it
+            },
+            dependencies: [],
+        },
     ],
 
     /* Run your local dev server before starting the tests */

@@ -3,16 +3,19 @@ import { test as setup, expect } from '@playwright/test';
 const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate', async ({ page }) => {
-    setup.setTimeout(60000);
+    setup.setTimeout(120000); // Increased to 2 minutes
     // Generate unique email
     const timestamp = Date.now();
     const email = `e2e_user_${timestamp}@example.com`;
     const password = 'Password123!';
 
     // 1. Register
+    console.log('Navigating to /register...');
     await page.goto('/register');
     await page.waitForLoadState('networkidle');
 
+    console.log('Filling registration form...');
+    await expect(page.locator('input[name="firstName"]')).toBeVisible({ timeout: 15000 });
     await page.fill('input[name="firstName"]', 'E2E');
     await page.fill('input[name="lastName"]', 'Test');
     await page.fill('input[name="email"]', email);

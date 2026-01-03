@@ -175,12 +175,14 @@ const Constants: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <Input
                             label={t('constants.code')}
+                            name="code"
                             value={formData.code}
                             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                             required
                         />
                         <Select
                             label={t('constants.type')}
+                            name="type"
                             value={formData.type}
                             onChange={(e) => setFormData({ ...formData, type: e.target.value as ConstantType })}
                             options={[
@@ -192,6 +194,7 @@ const Constants: React.FC = () => {
                     </div>
                     <Input
                         label={t('constants.name')}
+                        name="name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
@@ -200,6 +203,7 @@ const Constants: React.FC = () => {
                         <Input
                             label={t('constants.email')}
                             type="email"
+                            name="email"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         />
