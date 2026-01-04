@@ -86,9 +86,9 @@ const Reports: React.FC = () => {
                         <tr key={index}>
                             <td className="font-mono">{item.accountCode}</td>
                             <td>{item.accountName}</td>
-                            <td className="text-right font-mono">{item.debit.toFixed(2)}</td>
-                            <td className="text-right font-mono">{item.credit.toFixed(2)}</td>
-                            <td className="text-right font-mono font-semibold">{item.balance.toFixed(2)}</td>
+                            <td className="text-right font-mono">{Number(item.debit).toFixed(2)}</td>
+                            <td className="text-right font-mono">{Number(item.credit).toFixed(2)}</td>
+                            <td className="text-right font-mono font-semibold">{Number(item.balance).toFixed(2)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -96,13 +96,13 @@ const Reports: React.FC = () => {
                     <tr className="font-bold bg-slate-50 dark:bg-slate-900/50">
                         <td colSpan={2}>Total</td>
                         <td className="text-right">
-                            {trialBalance.reduce((sum, item) => sum + item.debit, 0).toFixed(2)}
+                            {trialBalance.reduce((sum, item) => sum + Number(item.debit), 0).toFixed(2)}
                         </td>
                         <td className="text-right">
-                            {trialBalance.reduce((sum, item) => sum + item.credit, 0).toFixed(2)}
+                            {trialBalance.reduce((sum, item) => sum + Number(item.credit), 0).toFixed(2)}
                         </td>
                         <td className="text-right">
-                            {trialBalance.reduce((sum, item) => sum + item.balance, 0).toFixed(2)}
+                            {trialBalance.reduce((sum, item) => sum + Number(item.balance), 0).toFixed(2)}
                         </td>
                     </tr>
                 </tfoot>
@@ -124,12 +124,12 @@ const Reports: React.FC = () => {
                                 <tr key={idx}>
                                     <td className="font-mono">{acc.code}</td>
                                     <td>{acc.name}</td>
-                                    <td className="text-right font-mono">{acc.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(acc.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-green-50">
                                 <td colSpan={2}>Total Income</td>
-                                <td className="text-right">{profitLoss.income.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(profitLoss.income.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -144,12 +144,12 @@ const Reports: React.FC = () => {
                                 <tr key={idx}>
                                     <td className="font-mono">{acc.code}</td>
                                     <td>{acc.name}</td>
-                                    <td className="text-right font-mono">{acc.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(acc.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-red-50">
                                 <td colSpan={2}>Total Expenses</td>
-                                <td className="text-right">{profitLoss.expenses.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(profitLoss.expenses.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -162,7 +162,7 @@ const Reports: React.FC = () => {
                             {profitLoss.netProfit >= 0 ? 'Net Profit' : 'Net Loss'}
                         </span>
                         <span className="text-2xl font-bold">
-                            {Math.abs(profitLoss.netProfit).toFixed(2)}
+                            {Math.abs(Number(profitLoss.netProfit)).toFixed(2)}
                         </span>
                     </div>
                 </div>
@@ -184,12 +184,12 @@ const Reports: React.FC = () => {
                                 <tr key={idx}>
                                     <td className="font-mono text-sm">{acc.code}</td>
                                     <td>{acc.name}</td>
-                                    <td className="text-right font-mono">{acc.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(acc.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-blue-50">
                                 <td colSpan={2}>Total Assets</td>
-                                <td className="text-right">{balanceSheet.assets.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(balanceSheet.assets.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -205,12 +205,12 @@ const Reports: React.FC = () => {
                                     <tr key={idx}>
                                         <td className="font-mono text-sm">{acc.code}</td>
                                         <td>{acc.name}</td>
-                                        <td className="text-right font-mono">{acc.amount.toFixed(2)}</td>
+                                        <td className="text-right font-mono">{Number(acc.amount).toFixed(2)}</td>
                                     </tr>
                                 ))}
                                 <tr className="font-bold bg-orange-50">
                                     <td colSpan={2}>Total Liabilities</td>
-                                    <td className="text-right">{balanceSheet.liabilities.total.toFixed(2)}</td>
+                                    <td className="text-right">{Number(balanceSheet.liabilities.total).toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -224,12 +224,12 @@ const Reports: React.FC = () => {
                                     <tr key={idx}>
                                         <td className="font-mono text-sm">{acc.code}</td>
                                         <td>{acc.name}</td>
-                                        <td className="text-right font-mono">{acc.amount.toFixed(2)}</td>
+                                        <td className="text-right font-mono">{Number(acc.amount).toFixed(2)}</td>
                                     </tr>
                                 ))}
                                 <tr className="font-bold bg-purple-50">
                                     <td colSpan={2}>Total Equity</td>
-                                    <td className="text-right">{balanceSheet.equity.total.toFixed(2)}</td>
+                                    <td className="text-right">{Number(balanceSheet.equity.total).toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -252,12 +252,12 @@ const Reports: React.FC = () => {
                             {cashFlow.operating.items.map((item, idx) => (
                                 <tr key={idx}>
                                     <td>{item.description}</td>
-                                    <td className="text-right font-mono">{item.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(item.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-gray-50">
                                 <td>Net Cash from Operating</td>
-                                <td className="text-right">{cashFlow.operating.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(cashFlow.operating.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -271,12 +271,12 @@ const Reports: React.FC = () => {
                             {cashFlow.investing.items.map((item, idx) => (
                                 <tr key={idx}>
                                     <td>{item.description}</td>
-                                    <td className="text-right font-mono">{item.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(item.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-gray-50">
                                 <td>Net Cash from Investing</td>
-                                <td className="text-right">{cashFlow.investing.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(cashFlow.investing.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -290,22 +290,22 @@ const Reports: React.FC = () => {
                             {cashFlow.financing.items.map((item, idx) => (
                                 <tr key={idx}>
                                     <td>{item.description}</td>
-                                    <td className="text-right font-mono">{item.amount.toFixed(2)}</td>
+                                    <td className="text-right font-mono">{Number(item.amount).toFixed(2)}</td>
                                 </tr>
                             ))}
                             <tr className="font-bold bg-gray-50">
                                 <td>Net Cash from Financing</td>
-                                <td className="text-right">{cashFlow.financing.total.toFixed(2)}</td>
+                                <td className="text-right">{Number(cashFlow.financing.total).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 {/* Net Change */}
-                <div className={`p-4 rounded-lg ${cashFlow.netChange >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
+                <div className={`p-4 rounded-lg ${Number(cashFlow.netChange) >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
                     <div className="flex justify-between items-center">
                         <span className="text-xl font-bold">Net Change in Cash</span>
-                        <span className="text-2xl font-bold">{cashFlow.netChange.toFixed(2)}</span>
+                        <span className="text-2xl font-bold">{Number(cashFlow.netChange).toFixed(2)}</span>
                     </div>
                 </div>
             </div>

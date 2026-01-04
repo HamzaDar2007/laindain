@@ -111,7 +111,7 @@ const Payments: React.FC = () => {
                                     <td className="font-mono">{payment.paymentNumber}</td>
                                     <td>{new Date(payment.date).toLocaleDateString()}</td>
                                     <td className="capitalize">{payment.paymentMethod}</td>
-                                    <td className="font-mono">{payment.amount.toFixed(2)}</td>
+                                    <td className="font-mono">{Number(payment.amount).toFixed(2)}</td>
                                     <td>{payment.reference || '-'}</td>
                                     <td>
                                         <span className={`badge ${payment.status === 'confirmed' ? 'badge-success' :

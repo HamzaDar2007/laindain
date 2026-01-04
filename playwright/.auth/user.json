@@ -6,11 +6,11 @@
       "localStorage": [
         {
           "name": "authToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGM4M2YyMi00OWE1LTRiNzUtODk4NC00ZTNkMDViMjI3OTkiLCJlbWFpbCI6ImUyZV91c2VyXzE3NjczODk4MTQ5ODZAZXhhbXBsZS5jb20iLCJjb21wYW55SWQiOiJkOGE5MTMyNC02ODI2LTRlZGItOTQ1YS0wN2M2YTI5YTI3ZWIiLCJyb2xlIjoib3duZXIiLCJqdGkiOiJlNzM1NTAzNy04OTU1LTRkYTEtYmIxNi00NWFkMGRlNWU1ZjUiLCJpYXQiOjE3NjczODk4NjAsImV4cCI6MTc2NzQ3NjI2MH0.W9O5mwM5ZLRuP20AxCKHQ_NXqQsuMOH2qAvww-ruUmA"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MTZmZDNkZi0xMTgyLTRmYTYtYWUzNC1mMjcwZDBhOGI4ZWIiLCJlbWFpbCI6ImUyZV91c2VyXzE3Njc0NzI2OTc0NDVAZXhhbXBsZS5jb20iLCJjb21wYW55SWQiOiIyMmUwNjE4ZC04ZGIwLTQyYmMtYTBjMC1iZGE1NjdiZDNmYTkiLCJyb2xlIjoib3duZXIiLCJqdGkiOiIyM2RmMjA3Zi1mYTQxLTQxN2UtYTcyYi1iNzdlNzMzNGI2MGIiLCJpYXQiOjE3Njc0NzI3NDAsImV4cCI6MTc2NzU1OTE0MH0.6tGG-2lKLf0SF8Li_mmzr0XOFoXet5726T7KRFfTb2U"
         },
         {
           "name": "authUser",
-          "value": "{\"id\":\"adc83f22-49a5-4b75-8984-4e3d05b22799\",\"fullName\":\"E2E Test\",\"email\":\"e2e_user_1767389814986@example.com\",\"companyId\":\"d8a91324-6826-4edb-945a-07c6a29a27eb\",\"role\":\"owner\",\"roles\":[\"owner\"]}"
+          "value": "{\"id\":\"916fd3df-1182-4fa6-ae34-f270d0a8b8eb\",\"fullName\":\"E2E Test\",\"email\":\"e2e_user_1767472697445@example.com\",\"companyId\":\"22e0618d-8db0-42bc-a0c0-bda567bd3fa9\",\"role\":\"owner\",\"roles\":[\"owner\"]}"
         }
       ]
     }
