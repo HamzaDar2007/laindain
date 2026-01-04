@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectAllIntegrations,
@@ -22,7 +22,7 @@ import Select from '../components/common/Select';
 import Card from '../components/common/Card';
 
 const Integrations: React.FC = () => {
-    // const { t } = useTranslation();
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const integrations = useSelector(selectAllIntegrations);
     const isLoading = useSelector(selectIntegrationsLoading);
@@ -108,9 +108,9 @@ const Integrations: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Integrations</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('integrations.title')}</h1>
                 <Button onClick={() => { resetForm(); setShowModal(true); }}>
-                    Add Integration
+                    {t('integrations.add')}
                 </Button>
             </div>
 

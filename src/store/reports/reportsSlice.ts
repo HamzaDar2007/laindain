@@ -85,29 +85,101 @@ const reportsSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.error.message || 'Failed to fetch trial balance';
             })
+            .addCase(fetchGeneralLedgerAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchGeneralLedgerAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.generalLedger = action.payload;
             })
+            .addCase(fetchGeneralLedgerAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch general ledger';
+            })
+            .addCase(fetchProfitLossAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchProfitLossAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.profitLoss = action.payload;
             })
+            .addCase(fetchProfitLossAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch profit & loss report';
+            })
+            .addCase(fetchBalanceSheetAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchBalanceSheetAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.balanceSheet = action.payload;
             })
+            .addCase(fetchBalanceSheetAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch balance sheet';
+            })
+            .addCase(fetchCashFlowAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchCashFlowAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.cashFlow = action.payload;
             })
+            .addCase(fetchCashFlowAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch cash flow report';
+            })
+            .addCase(fetchVatReportAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchVatReportAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.vatReport = action.payload;
             })
+            .addCase(fetchVatReportAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch VAT report';
+            })
+            .addCase(fetchCustomerReportAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchCustomerReportAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.customerReport = action.payload;
             })
+            .addCase(fetchCustomerReportAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch customer report';
+            })
+            .addCase(fetchDashboardChartsAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchDashboardChartsAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.dashboardCharts = action.payload;
             })
+            .addCase(fetchDashboardChartsAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch dashboard charts';
+            })
+            .addCase(fetchExpensesByCategoryAsync.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addCase(fetchExpensesByCategoryAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.expensesByCategory = action.payload;
+            })
+            .addCase(fetchExpensesByCategoryAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to fetch expenses by category';
             });
     },
 });

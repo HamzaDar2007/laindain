@@ -5,5 +5,6 @@ export const selectGeneralLedger = (state: RootState) => state.reports.generalLe
 export const selectProfitLoss = (state: RootState) => state.reports.profitLoss;
 export const selectBalanceSheet = (state: RootState) => state.reports.balanceSheet;
 export const selectCashFlow = (state: RootState) => state.reports.cashFlow;
+export const selectDashboardCharts = (state: RootState) => state.reports.dashboardCharts;
 export const selectReportsLoading = (state: RootState) => state.reports.isLoading;
 export const selectReportsError = (state: RootState) => state.reports.error;

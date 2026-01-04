@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectSubscription,
@@ -19,7 +19,7 @@ import Select from '../components/common/Select';
 import Card from '../components/common/Card';
 
 const Billing: React.FC = () => {
-    // const { t } = useTranslation();
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const subscription = useSelector(selectSubscription);
     const transactions = useSelector(selectTransactions);
@@ -73,10 +73,10 @@ const Billing: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Billing & Subscription</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('billing.title')}</h1>
                 {subscription && subscription.status !== 'cancelled' && (
                     <Button onClick={() => setShowModal(true)}>
-                        Update Subscription
+                        {t('billing.update')}
                     </Button>
                 )}
             </div>
@@ -87,7 +87,7 @@ const Billing: React.FC = () => {
                 <>
                     {/* Subscription Details */}
                     <Card>
-                        <h2 className="text-xl font-semibold mb-4">Current Subscription</h2>
+                        <h2 className="text-xl font-semibold mb-4">{t('billing.currentSubscription')}</h2>
                         {subscription ? (
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
@@ -160,7 +160,7 @@ const Billing: React.FC = () => {
 
                     {/* Transaction History */}
                     <Card>
-                        <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+                        <h2 className="text-xl font-semibold mb-4">{t('billing.transactionHistory')}</h2>
                         {transactions.length > 0 ? (
                             <table className="table">
                                 <thead>
@@ -180,7 +180,7 @@ const Billing: React.FC = () => {
                                             </td>
                                             <td className="capitalize">{transaction.type}</td>
                                             <td className="font-mono">
-                                                {transaction.currency} {transaction.amount.toFixed(2)}
+                                                {transaction.currency} {Number(transaction.amount).toFixed(2)}
                                             </td>
                                             <td>
                                                 <span className={`badge ${getTransactionStatusBadgeClass(transaction.status)}`}>

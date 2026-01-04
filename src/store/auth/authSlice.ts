@@ -45,6 +45,13 @@ export const refreshTokenAsync = createAppAsyncThunk(
     }
 );
 
+export const updateProfileAsync = createAppAsyncThunk(
+    'auth/updateProfile',
+    async ({ id, data }: { id: string; data: any }) => {
+        return await authApi.updateProfile(id, data);
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -100,6 +107,21 @@ const authSlice = createSlice({
         builder.addCase(refreshTokenAsync.fulfilled, (state, action) => {
             state.token = action.payload.access_token;
             state.refreshToken = action.payload.refreshToken || null;
+        });
+
+        // Update Profile
+        builder.addCase(updateProfileAsync.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        });
+        builder.addCase(updateProfileAsync.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.user = action.payload;
+            localStorage.setItem('authUser', JSON.stringify(action.payload));
+        });
+        builder.addCase(updateProfileAsync.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
         });
     },
 });

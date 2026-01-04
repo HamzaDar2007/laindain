@@ -39,6 +39,13 @@ class ApiClient {
             async (error: AxiosError) => {
                 const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+                if (error.response?.status === 409 && originalRequest.method === 'get' && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    // Wait 500ms and retry to bypass backend race condition
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    return this.client(originalRequest);
+                }
+
                 if (error.response?.status === 401 && !originalRequest._retry) {
                     originalRequest._retry = true;
                     const refreshToken = localStorage.getItem('refreshToken');

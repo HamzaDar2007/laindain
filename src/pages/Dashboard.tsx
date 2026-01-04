@@ -6,6 +6,8 @@ import { selectAllAccounts, selectAccountsLoading } from '../store/accounts/acco
 import { selectAllJournals, selectJournalsLoading } from '../store/journal/journalSelector';
 import { fetchAccountsAsync } from '../store/accounts/accountsSlice';
 import { fetchJournalsAsync } from '../store/journal/journalSlice';
+import { fetchDashboardChartsAsync } from '../store/reports/reportsSlice';
+import { selectDashboardCharts } from '../store/reports/reportsSelector';
 import { AccountType } from '../store/accounts/accountsTypes';
 import PageHeader from '../components/common/PageHeader';
 import Skeleton from '../components/common/Skeleton';
@@ -25,6 +27,7 @@ const Dashboard: React.FC = () => {
     const journals = useSelector(selectAllJournals);
     const accountsLoading = useSelector(selectAccountsLoading);
     const journalsLoading = useSelector(selectJournalsLoading);
+    const dashboardCharts = useSelector(selectDashboardCharts);
 
     const isLoading = accountsLoading || journalsLoading;
 
@@ -32,6 +35,7 @@ const Dashboard: React.FC = () => {
         if (currentTenant) {
             dispatch(fetchAccountsAsync() as any);
             dispatch(fetchJournalsAsync() as any);
+            dispatch(fetchDashboardChartsAsync(6) as any);
         }
     }, [currentTenant, dispatch]);
 
@@ -170,7 +174,7 @@ const Dashboard: React.FC = () => {
 
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <AreaChart data={dashboardCharts?.revenueVsExpenses || revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />

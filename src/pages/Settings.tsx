@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../store/auth/authSelector';
 import { selectCurrentTenant } from '../store/tenants/tenantsSelector';
-import { logout } from '../store/auth/authSlice';
+import { logout, updateProfileAsync } from '../store/auth/authSlice';
+import Button from '../components/common/Button';
+import Input from '../components/common/Input';
 
 const Settings: React.FC = () => {
     const { t } = useTranslation();
@@ -12,6 +14,28 @@ const Settings: React.FC = () => {
     const navigate = useNavigate();
     const user = useSelector(selectUser);
     const currentTenant = useSelector(selectCurrentTenant);
+
+    const [profileData, setProfileData] = React.useState({
+        fullName: user?.fullName || '',
+        email: user?.email || '',
+    });
+
+    React.useEffect(() => {
+        if (user) {
+            setProfileData({
+                fullName: user.fullName || '',
+                email: user.email || '',
+            });
+        }
+    }, [user]);
+
+    const handleSaveProfile = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (user?.id) {
+            await dispatch(updateProfileAsync({ id: user.id, data: profileData }) as any);
+            alert('Profile updated successfully');
+        }
+    };
 
     const handleLogout = () => {
         dispatch(logout());
@@ -27,30 +51,26 @@ const Settings: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card">
                     <h2 className="text-xl font-semibold mb-4">User Profile</h2>
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                {t('auth.fullName')}
-                            </label>
-                            <input
-                                type="text"
-                                className="input"
-                                value={user?.fullName || ''}
-                                readOnly
-                            />
+                    <form onSubmit={handleSaveProfile} className="space-y-4">
+                        <Input
+                            label={t('auth.fullName')}
+                            value={profileData.fullName}
+                            onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
+                            required
+                        />
+                        <Input
+                            label={t('auth.email')}
+                            type="email"
+                            value={profileData.email}
+                            onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                            required
+                        />
+                        <div className="pt-2">
+                            <Button type="submit">
+                                Save Profile
+                            </Button>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                {t('auth.email')}
-                            </label>
-                            <input
-                                type="email"
-                                className="input"
-                                value={user?.email || ''}
-                                readOnly
-                            />
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
                 <div className="card">

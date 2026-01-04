@@ -13,4 +13,12 @@ export const authApi = {
     async refreshToken(refreshToken: string): Promise<AuthResponse> {
         return apiClient.post<AuthResponse>('/auth/refresh', { refreshToken });
     },
+
+    async updateProfile(id: string, data: any): Promise<any> {
+        return apiClient.patch<any>(`/users/${id}`, data);
+    },
+
+    async changePassword(data: any): Promise<any> {
+        return apiClient.post<any>('/auth/change-password', data);
+    },
 };
